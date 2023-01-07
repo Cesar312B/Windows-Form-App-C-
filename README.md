@@ -1,5 +1,6 @@
-# Aplicacion Ortodental con Windows Form c# y SQL Lite
+# Aplicacion de Escrtitorio  Ortodental con Windows Form c# y SQL Lite 
 -Caracteristicas 
+App portable 
 Login 
 ![image](https://user-images.githubusercontent.com/86753747/211125387-3e702019-723d-4220-a995-a9b9f13396bb.png)
 

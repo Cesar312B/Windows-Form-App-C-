@@ -5,7 +5,8 @@ Login
 ![image](https://user-images.githubusercontent.com/86753747/211125387-3e702019-723d-4220-a995-a9b9f13396bb.png)
 
 Registros Pacientes con busqueda de datos en tiempo real.
-![image](https://user-images.githubusercontent.com/86753747/211125406-cf588fba-b452-4382-b018-08e5c00008d1.png)
+![image](https://user-images.githubusercontent.com/86753747/216741528-880927c6-eac2-4edd-a6e9-f8467c8168dd.png)
+
 
 Bitacora 
 ![image](https://user-images.githubusercontent.com/86753747/211125437-8a27670b-1650-4cbd-9e61-2d17dc1dccd1.png)

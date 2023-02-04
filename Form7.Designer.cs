@@ -50,10 +50,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.id = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.debe = new System.Windows.Forms.Label();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.button5 = new System.Windows.Forms.Button();
@@ -61,17 +57,29 @@
             this.filtrar = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.printPreviewDialog2 = new System.Windows.Forms.PrintPreviewDialog();
+            this.label4 = new System.Windows.Forms.Label();
+            this.total_abonado = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.precio = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.dv = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.filtrar2 = new System.Windows.Forms.TextBox();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.abonos)).BeginInit();
             this.SuspendLayout();
             // 
             // abonos
             // 
+            this.abonos.AllowUserToAddRows = false;
+            this.abonos.AllowUserToDeleteRows = false;
             this.abonos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.abonos.Location = new System.Drawing.Point(71, 276);
+            this.abonos.Location = new System.Drawing.Point(71, 371);
             this.abonos.Name = "abonos";
+            this.abonos.ReadOnly = true;
             this.abonos.RowHeadersWidth = 62;
             this.abonos.RowTemplate.Height = 28;
-            this.abonos.Size = new System.Drawing.Size(920, 199);
+            this.abonos.Size = new System.Drawing.Size(1032, 199);
             this.abonos.TabIndex = 0;
             this.abonos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.bitacora_CellClick);
             // 
@@ -94,19 +102,20 @@
             // 
             // ABO_PTAS
             // 
-            this.ABO_PTAS.Location = new System.Drawing.Point(468, 119);
+            this.ABO_PTAS.Location = new System.Drawing.Point(251, 190);
             this.ABO_PTAS.Name = "ABO_PTAS";
-            this.ABO_PTAS.Size = new System.Drawing.Size(120, 26);
+            this.ABO_PTAS.Size = new System.Drawing.Size(131, 26);
             this.ABO_PTAS.TabIndex = 4;
             this.ABO_PTAS.TextChanged += new System.EventHandler(this.ABO_PTAS_TextChanged);
             this.ABO_PTAS.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ABO_PTAS_KeyPress);
             // 
             // DESC_TRABAJO
             // 
-            this.DESC_TRABAJO.Location = new System.Drawing.Point(268, 190);
+            this.DESC_TRABAJO.Location = new System.Drawing.Point(71, 253);
             this.DESC_TRABAJO.Name = "DESC_TRABAJO";
-            this.DESC_TRABAJO.Size = new System.Drawing.Size(185, 26);
+            this.DESC_TRABAJO.Size = new System.Drawing.Size(335, 26);
             this.DESC_TRABAJO.TabIndex = 5;
+            this.DESC_TRABAJO.TextChanged += new System.EventHandler(this.DESC_TRABAJO_TextChanged);
             // 
             // ABO_FECHA
             // 
@@ -131,18 +140,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(275, 91);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 20);
+            this.label2.Size = new System.Drawing.Size(127, 20);
             this.label2.TabIndex = 8;
-            this.label2.Text = "ABO_FECHA";
+            this.label2.Text = "Fecha de Abono";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(464, 91);
+            this.label3.Location = new System.Drawing.Point(251, 167);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(122, 20);
+            this.label3.Size = new System.Drawing.Size(66, 20);
             this.label3.TabIndex = 9;
-            this.label3.Text = "ABO_INICIAL $";
+            this.label3.Text = "ABONO";
             // 
             // label5
             // 
@@ -156,11 +165,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(269, 167);
+            this.label6.Location = new System.Drawing.Point(67, 230);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(137, 20);
+            this.label6.Size = new System.Drawing.Size(92, 20);
             this.label6.TabIndex = 12;
-            this.label6.Text = "DESC_TRABAJO";
+            this.label6.Text = "Descripcion";
             // 
             // label113
             // 
@@ -198,7 +207,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(71, 225);
+            this.button1.Location = new System.Drawing.Point(71, 320);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 41);
             this.button1.TabIndex = 17;
@@ -208,7 +217,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(167, 225);
+            this.button2.Location = new System.Drawing.Point(167, 320);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 41);
             this.button2.TabIndex = 18;
@@ -218,7 +227,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(249, 226);
+            this.button3.Location = new System.Drawing.Point(249, 321);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 40);
             this.button3.TabIndex = 19;
@@ -228,7 +237,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(331, 226);
+            this.button4.Location = new System.Drawing.Point(331, 321);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 40);
             this.button4.TabIndex = 20;
@@ -253,40 +262,6 @@
             this.label8.TabIndex = 22;
             this.label8.Text = "id";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(473, 167);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(115, 20);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Añadir Aportes";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(468, 190);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(120, 26);
-            this.textBox1.TabIndex = 23;
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_keyPress);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(615, 91);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 20);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "Debe";
-            // 
-            // debe
-            // 
-            this.debe.AutoSize = true;
-            this.debe.Location = new System.Drawing.Point(619, 124);
-            this.debe.Name = "debe";
-            this.debe.Size = new System.Drawing.Size(0, 20);
-            this.debe.TabIndex = 26;
-            // 
             // printDocument1
             // 
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
@@ -303,7 +278,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(847, 184);
+            this.button5.Location = new System.Drawing.Point(847, 230);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(144, 32);
             this.button5.TabIndex = 27;
@@ -317,7 +292,7 @@
             // 
             // filtrar
             // 
-            this.filtrar.Location = new System.Drawing.Point(847, 107);
+            this.filtrar.Location = new System.Drawing.Point(847, 101);
             this.filtrar.Name = "filtrar";
             this.filtrar.Size = new System.Drawing.Size(144, 26);
             this.filtrar.TabIndex = 28;
@@ -326,7 +301,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(847, 90);
+            this.label10.Location = new System.Drawing.Point(950, 66);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(93, 20);
             this.label10.TabIndex = 29;
@@ -342,18 +317,107 @@
             this.printPreviewDialog2.Name = "printPreviewDialog2";
             this.printPreviewDialog2.Visible = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(66, 594);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(158, 26);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "Total Abonado:";
+            // 
+            // total_abonado
+            // 
+            this.total_abonado.AutoSize = true;
+            this.total_abonado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.total_abonado.Location = new System.Drawing.Point(230, 594);
+            this.total_abonado.Name = "total_abonado";
+            this.total_abonado.Size = new System.Drawing.Size(0, 26);
+            this.total_abonado.TabIndex = 31;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(353, 594);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(187, 26);
+            this.label9.TabIndex = 32;
+            this.label9.Text = "Precio del trabajo:";
+            // 
+            // precio
+            // 
+            this.precio.AutoSize = true;
+            this.precio.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.precio.Location = new System.Drawing.Point(546, 594);
+            this.precio.Name = "precio";
+            this.precio.Size = new System.Drawing.Size(0, 26);
+            this.precio.TabIndex = 33;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(668, 594);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(70, 26);
+            this.label11.TabIndex = 34;
+            this.label11.Text = "Debe:";
+            // 
+            // dv
+            // 
+            this.dv.AutoSize = true;
+            this.dv.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dv.Location = new System.Drawing.Point(744, 594);
+            this.dv.Name = "dv";
+            this.dv.Size = new System.Drawing.Size(0, 26);
+            this.dv.TabIndex = 35;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(915, 596);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(110, 37);
+            this.button6.TabIndex = 36;
+            this.button6.Text = "Calculadora";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            // 
+            // filtrar2
+            // 
+            this.filtrar2.Location = new System.Drawing.Point(997, 101);
+            this.filtrar2.Name = "filtrar2";
+            this.filtrar2.Size = new System.Drawing.Size(144, 26);
+            this.filtrar2.TabIndex = 37;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(907, 133);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(196, 36);
+            this.button7.TabIndex = 38;
+            this.button7.Text = "Filtrar entre Fechas";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click_1);
+            // 
             // Form7
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1032, 487);
+            this.ClientSize = new System.Drawing.Size(1181, 746);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.filtrar2);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.dv);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.precio);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.total_abonado);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.filtrar);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.debe);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.id);
             this.Controls.Add(this.button4);
@@ -375,8 +439,9 @@
             this.Controls.Add(this.PRECIO_TRABAJO);
             this.Controls.Add(this.PACI_COD);
             this.Controls.Add(this.abonos);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form7";
             this.Text = "Abonos";
             this.Load += new System.EventHandler(this.Form7_Load);
@@ -409,10 +474,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox id;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label debe;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.Button button5;
@@ -420,5 +481,14 @@
         private System.Windows.Forms.TextBox filtrar;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label total_abonado;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label precio;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label dv;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox filtrar2;
+        private System.Windows.Forms.Button button7;
     }
 }

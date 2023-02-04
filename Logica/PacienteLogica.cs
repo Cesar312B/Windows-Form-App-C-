@@ -46,7 +46,7 @@ namespace Nativo.Logica
             {
                 conexion.Open();
 
-                string query = "INSERT INTO Paciente (PACI_COD, PACI_NOM, PACI_NACI, PACI_FOTO, PACI_FOTO_ORTO, PACI_FOTO2, PACI_SEXO, PACI_DIR, PACI_LOCAL, PACI_TELEF, PACI_ENT, PACI_PROF, PACI_NORD, PACI_COMEN, PACI_HIST, PACI_REPRE, PACI_FOTO_ORTO2,DNI) VALUES(@PACI_COD, @PACI_NOM, @PACI_NACI, @PACI_FOTO, @PACI_FOTO_ORTO, @PACI_FOTO2, @PACI_SEXO, @PACI_DIR, @PACI_LOCAL, @PACI_TELEF, @PACI_ENT, @PACI_PROF, @PACI_NORD, @PACI_COMEN, @PACI_HIST, @PACI_REPRE, @PACI_FOTO_ORTO2,@DNI)";
+                string query = "INSERT INTO Paciente (PACI_COD, PACI_NOM, PACI_NACI, PACI_FOTO, PACI_FOTO_ORTO, PACI_FOTO2, PACI_SEXO, PACI_DIR, PACI_LOCAL, PACI_TELEF, PACI_ENT, PACI_PROF, PACI_COMEN, PACI_HIST, PACI_REPRE, PACI_FOTO_ORTO2,DNI) VALUES(@PACI_COD, @PACI_NOM, @PACI_NACI, @PACI_FOTO, @PACI_FOTO_ORTO, @PACI_FOTO2, @PACI_SEXO, @PACI_DIR, @PACI_LOCAL, @PACI_TELEF, @PACI_ENT, @PACI_PROF, @PACI_COMEN, @PACI_HIST, @PACI_REPRE, @PACI_FOTO_ORTO2,@DNI)";
                 SQLiteCommand cmd = new SQLiteCommand(query, conexion);
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_COD", obj.PACI_COD));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_NOM", obj.PACI_NOM));
@@ -59,9 +59,9 @@ namespace Nativo.Logica
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_LOCAL", obj.PACI_LOCAL));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_TELEF", obj.PACI_TELEF));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_ENT", obj.PACI_ENT));
-                cmd.Parameters.Add(new SQLiteParameter("@PACI_PROF", obj.DNI));
-                cmd.Parameters.Add(new SQLiteParameter("@DNI", obj.PACI_FOTO_ORTO2));
-                cmd.Parameters.Add(new SQLiteParameter("@PACI_NORD", obj.PACI_NORD));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_PROF", obj.PACI_PROF));
+                cmd.Parameters.Add(new SQLiteParameter("@DNI", obj.DNI));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_FOTO_ORTO2", obj.PACI_FOTO_ORTO2));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_COMEN", obj.PACI_COMEN));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_HIST", obj.PACI_HIST));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_REPRE", obj.PACI_REPRE));
@@ -84,7 +84,7 @@ namespace Nativo.Logica
             {
                 conexion.Open();
 
-                string query = "UPDATE Paciente set PACI_COD=@PACI_COD, PACI_NOM=@PACI_NOM, PACI_NACI=@PACI_NACI, PACI_SEXO=@PACI_SEXO, PACI_DIR=@PACI_DIR, PACI_LOCAL=@PACI_LOCAL, PACI_TELEF=@PACI_TELEF, PACI_ENT=@PACI_ENT, PACI_PROF=@PACI_PROF, PACI_NORD=@PACI_NORD, PACI_COMEN=@PACI_COMEN, PACI_HIST=@PACI_HIST, PACI_REPRE=@PACI_REPRE,DNI=@DNI  WHERE PACI_COD=@PACI_COD";
+                string query = "UPDATE Paciente set PACI_COD=@PACI_COD, PACI_NOM=@PACI_NOM, PACI_NACI=@PACI_NACI, PACI_SEXO=@PACI_SEXO, PACI_DIR=@PACI_DIR, PACI_LOCAL=@PACI_LOCAL, PACI_TELEF=@PACI_TELEF, PACI_ENT=@PACI_ENT, PACI_PROF=@PACI_PROF, PACI_COMEN=@PACI_COMEN, PACI_HIST=@PACI_HIST, PACI_REPRE=@PACI_REPRE,DNI=@DNI,PACI_FOTO=@PACI_FOTO,PACI_FOTO_ORTO=@PACI_FOTO_ORTO,PACI_FOTO2=@PACI_FOTO2,PACI_FOTO_ORTO2=@PACI_FOTO_ORTO2 WHERE PACI_COD=@PACI_COD";
                 SQLiteCommand cmd = new SQLiteCommand(query, conexion);
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_COD", obj.PACI_COD));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_NOM", obj.PACI_NOM));
@@ -96,10 +96,14 @@ namespace Nativo.Logica
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_ENT", obj.PACI_ENT));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_PROF", obj.PACI_PROF));
                 cmd.Parameters.Add(new SQLiteParameter("@DNI", obj.DNI));
-                cmd.Parameters.Add(new SQLiteParameter("@PACI_NORD", obj.PACI_NORD));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_COMEN", obj.PACI_COMEN));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_HIST", obj.PACI_HIST));
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_REPRE", obj.PACI_REPRE));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_FOTO", obj.PACI_FOTO));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_FOTO_ORTO", obj.PACI_FOTO_ORTO));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_FOTO2", obj.PACI_FOTO2));
+                cmd.Parameters.Add(new SQLiteParameter("@PACI_FOTO_ORTO2", obj.PACI_FOTO_ORTO2));
+
                 cmd.CommandType = System.Data.CommandType.Text;
                 if (cmd.ExecuteNonQuery() < 1)
                 {
@@ -239,7 +243,6 @@ namespace Nativo.Logica
                     
                             PACI_PROF = dr["PACI_PROF"].ToString(),
                          
-                            PACI_NORD = dr["PACI_NORD"].ToString(),
                             PACI_COMEN = dr["PACI_COMEN"].ToString(),
                             PACI_HIST = dr["PACI_HIST"].ToString(),
                             PACI_REPRE = dr["PACI_REPRE"].ToString(),

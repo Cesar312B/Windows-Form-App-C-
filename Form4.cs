@@ -35,7 +35,11 @@ namespace Nativo
         private void Form4_Load(object sender, EventArgs e)
         {
             mostrar_foto();
+
+
         }
+
+
 
 
         public void mostrar_foto()
@@ -53,8 +57,14 @@ namespace Nativo
             adap.Fill(ds);
             PACI_FOTO_ORTO.DataSource = ds.Tables[0];
 
-            DataTable dt = (DataTable)PACI_FOTO_ORTO.DataSource;
+            DataGridViewColumn column = PACI_FOTO_ORTO.Columns[0];
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             ((DataGridViewImageColumn)PACI_FOTO_ORTO.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+       
+
+
+
+
 
         }
 

@@ -19,11 +19,127 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using static System.Data.Entity.Infrastructure.Design.Executor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
 
 namespace Nativo.Modelo
 {
     public partial class Form2 : Form
     {
+        protected OpenFileDialog _openFileDialog = new OpenFileDialog();
+
+        protected OpenFileDialog _openFileDialog1 = new OpenFileDialog();
+
+        protected OpenFileDialog _openFileDialog2 = new OpenFileDialog();
+
+        protected OpenFileDialog _openFileDialog3 = new OpenFileDialog();
+
+        public static class MyGlobals
+        {
+            public static byte[] archivo1;
+            public static byte[] archivo2;
+            public static byte[] archivo3;
+            public static byte[] archivo4;
+
+        }
+    
+
+        private void PACI_FOTO_Click(object sender, EventArgs e)
+        {
+            _openFileDialog.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            _openFileDialog.FilterIndex = 1;
+            _openFileDialog.RestoreDirectory = true;
+            _openFileDialog.Reset();
+            if (_openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //some code
+                PACI_FOTO.Text = _openFileDialog.FileName;
+                pictureBox1.Image = new Bitmap(_openFileDialog.FileName);
+                Stream Mystrem1 = _openFileDialog.OpenFile();
+                MemoryStream obj1 = new MemoryStream();
+                Mystrem1.CopyTo(obj1);
+
+                MyGlobals.archivo1 = obj1.ToArray();
+            }
+
+
+        }
+
+        private void PACI_FOTO2_Click(object sender, EventArgs e)
+        {
+            _openFileDialog1.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            _openFileDialog1.FilterIndex = 1;
+            _openFileDialog1.RestoreDirectory = true;
+            _openFileDialog1.Reset();
+            if (_openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //some code
+                PACI_FOTO2.Text = _openFileDialog1.FileName;
+                pictureBox2.Image = new Bitmap(_openFileDialog1.FileName);
+                Stream Mystrem1 = _openFileDialog1.OpenFile();
+                MemoryStream obj1 = new MemoryStream();
+                Mystrem1.CopyTo(obj1);
+
+                MyGlobals.archivo2 = obj1.ToArray();
+            }
+
+
+
+        }
+
+        private void PACI_FOTO_ORTO_Click(object sender, EventArgs e)
+        {
+            _openFileDialog2.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            _openFileDialog2.FilterIndex = 1;
+            _openFileDialog2.RestoreDirectory = true;
+            _openFileDialog2.Reset();
+            if (_openFileDialog2.ShowDialog() == DialogResult.OK)
+            {
+                //some code
+                PACI_FOTO_ORTO.Text = _openFileDialog2.FileName;
+                pictureBox3.Image = new Bitmap(_openFileDialog2.FileName);
+                Stream Mystrem1 = _openFileDialog2.OpenFile();
+                MemoryStream obj1 = new MemoryStream();
+                Mystrem1.CopyTo(obj1);
+
+                MyGlobals.archivo3 = obj1.ToArray();
+            }
+
+        }
+
+        private void PACI_FOTO_ORTO2_Click(object sender, EventArgs e)
+        {
+
+            _openFileDialog3.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            _openFileDialog3.FilterIndex = 1;
+            _openFileDialog3.RestoreDirectory = true;
+            _openFileDialog3.Reset();
+            if (_openFileDialog3.ShowDialog() == DialogResult.OK)
+            {
+                //some code
+                PACI_FOTO_ORTO2.Text = _openFileDialog3.FileName;
+                pictureBox4.Image = new Bitmap(_openFileDialog3.FileName);
+                Stream Mystrem1 = _openFileDialog3.OpenFile();
+                MemoryStream obj1 = new MemoryStream();
+                Mystrem1.CopyTo(obj1);
+
+                MyGlobals.archivo4 = obj1.ToArray();
+            }
+
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+            mostrar_pacientes();
+
+
+
+
+        }
+
         public Form2()
         {
             InitializeComponent();
@@ -36,14 +152,7 @@ namespace Nativo.Modelo
 
 
 
-        public static class MyGlobals
-        {
-            public static byte[] archivo1;
-            public static byte[] archivo2;
-            public static byte[] archivo3;
-            public static byte[] archivo4;
-
-        }
+      
 
         public void mostrar_pacientes()
         {
@@ -63,29 +172,18 @@ namespace Nativo.Modelo
 
             DataTable dt = (DataTable)dbpacientes.DataSource;
 
-
+            dt.DefaultView.RowFilter = "PACI_COD like '%" + buscar_nombre.Text + "%'"+ "OR PACI_NOM like '%" + buscar_nombre.Text + "%'"+ "OR DNI like '%" + buscar_nombre.Text + "%'";
 
             count.Text = dt.Rows.Count.ToString();
 
-            dt.DefaultView.RowFilter = "PACI_COD like '%" + buscar_nombre.Text + "%'"+ "OR PACI_NOM like '%" + buscar_nombre.Text + "%'"+ "OR DNI like '%" + buscar_nombre.Text + "%'";
-
-
-
-
-
-
-
-
-
-
-
-
+         
         }
 
+       
 
-    
 
-       private void dbpacientes_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+
+        private void dbpacientes_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             using (SolidBrush b = new SolidBrush(dbpacientes.RowHeadersDefaultCellStyle.ForeColor))
             {
@@ -104,8 +202,15 @@ namespace Nativo.Modelo
         }
 
         private void Form2_Load(object sender, EventArgs e)
+
         {
+            var bounds = Screen.FromControl(this).Bounds;
+            this.MaximumSize = SystemInformation.PrimaryMonitorMaximizedWindowSize;
+            this.WindowState = FormWindowState.Maximized;
             mostrar_pacientes();
+       
+
+
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -142,27 +247,75 @@ namespace Nativo.Modelo
             av = dbpacientes.CurrentRow.Cells[0].Value.ToString();
             string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
             SQLiteConnection connect = new SQLiteConnection(cadena);
-            SQLiteCommand command = new SQLiteCommand("SELECT PACI_NACI, PACI_SEXO, PACI_DIR, PACI_LOCAL, PACI_TELEF, PACI_ENT, PACI_PROF, PACI_NORD, PACI_COMEN, PACI_HIST, PACI_REPRE, DNI FROM Paciente WHERE PACI_COD ='" + av + "'", connect);
+            SQLiteCommand command = new SQLiteCommand("SELECT PACI_NACI, PACI_SEXO, PACI_DIR, PACI_LOCAL, PACI_TELEF, PACI_ENT, PACI_PROF, PACI_COMEN, PACI_HIST, PACI_REPRE, DNI FROM Paciente WHERE PACI_COD ='" + av + "'", connect);
             SQLiteDataAdapter dp = new SQLiteDataAdapter(command);
             DataSet ds = new DataSet("Paciente");
 
-            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT PACI_FOTO FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT PACI_FOTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+            SQLiteDataAdapter adap1 = new SQLiteDataAdapter("SELECT PACI_FOTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+            SQLiteDataAdapter adap2 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+            SQLiteDataAdapter adap3 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+
+
+            DataSet ds1 = new DataSet();
+            adap.Fill(ds1);
 
             DataSet ds2 = new DataSet();
-            adap.Fill(ds2);
+            adap1.Fill(ds2);
+
+            DataSet ds3 = new DataSet();
+            adap2.Fill(ds3);
+
+            DataSet ds4 = new DataSet();
+            adap3.Fill(ds4);
+
+
+
             dataGridView2.RowTemplate.Height = 200;
             dataGridView2.ColumnHeadersVisible = false;
 
-            dataGridView2.DataSource = ds2.Tables[0];
+            dataGridView2.DataSource = ds1.Tables[0];
 
             DataTable dt = (DataTable)dataGridView2.DataSource;
 
             DataGridViewColumn column = dataGridView2.Columns[0];
+            dataGridView2.Columns[1].Visible = false;
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
-            
 
-           
+            dataGridView4.RowTemplate.Height = 200;
+            dataGridView4.ColumnHeadersVisible = false;
+            dataGridView4.DataSource = ds2.Tables[0];
+            DataTable dt2 = (DataTable)dataGridView4.DataSource;
+            DataGridViewColumn column2 = dataGridView4.Columns[0];
+            dataGridView4.Columns[1].Visible = false;
+            column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ((DataGridViewImageColumn)dataGridView4.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+            dataGridView1.RowTemplate.Height = 150;
+            dataGridView1.ColumnHeadersVisible = false;
+            dataGridView1.DataSource = ds3.Tables[0];
+            DataTable dt3 = (DataTable)dataGridView1.DataSource;
+
+            DataGridViewColumn column3 = dataGridView1.Columns[0];
+            dataGridView1.Columns[1].Visible = false;
+            column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ((DataGridViewImageColumn)dataGridView1.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+            dataGridView3.RowTemplate.Height = 150;
+            dataGridView3.ColumnHeadersVisible = false;
+            
+            dataGridView3.DataSource = ds4.Tables[0];
+
+            DataTable d4 = (DataTable)dataGridView3.DataSource;
+
+            DataGridViewColumn column4 = dataGridView3.Columns[0];
+            dataGridView3.Columns[1].Visible = false;
+            column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            ((DataGridViewImageColumn)dataGridView3.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+
             dp.Fill(ds, "Paciente");
             DataRow myRow = ds.Tables["Paciente"].Rows[0];
             if (myRow["PACI_NACI"] != DBNull.Value )
@@ -296,24 +449,7 @@ namespace Nativo.Modelo
             }
 
 
-            if ( myRow["PACI_NORD"] != DBNull.Value)
-            {
-
-
-               
-
-                PACI_NORD.Text = (string)myRow["PACI_NORD"];
-
-
-
-            }
-            else
-            {
-              
-
-                PACI_NORD.Text = null;
-
-            }
+         
 
             if (myRow["PACI_REPRE"] != DBNull.Value )
             {
@@ -378,183 +514,96 @@ namespace Nativo.Modelo
 
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            /*string av;
+       
+         
+            string av5;
            
-            av = dbpacientes.CurrentRow.Cells[0].Value.ToString();
-            string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
-            SQLiteConnection connect = new SQLiteConnection(cadena);
-            SQLiteCommand command = new SQLiteCommand("SELECT PACI_FOTO,PACI_FOTO_ORTO,PACI_FOTO2,PACI_FOTO_ORTO2 FROM Paciente WHERE PACI_COD ='"+av+"'", connect);
-            SQLiteDataAdapter dp = new SQLiteDataAdapter(command);
-            DataSet ds = new DataSet("Paciente");
+            av5 = dbpacientes.CurrentRow.Cells[0].Value.ToString();
+            string cadena3 = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
+            SQLiteConnection connect3 = new SQLiteConnection(cadena3);
+            SQLiteCommand command2 = new SQLiteCommand("SELECT PACI_FOTO,PACI_FOTO_ORTO,PACI_FOTO2,PACI_FOTO_ORTO2 FROM Paciente WHERE PACI_COD ='" + av5 + "'", connect3);
+            SQLiteDataAdapter dp2 = new SQLiteDataAdapter(command2);
+            DataSet ds5 = new DataSet("Paciente");
 
-            dp.Fill(ds, "Paciente");
-            DataRow myRow = ds.Tables["Paciente"].Rows[0];
+            dp2.Fill(ds5, "Paciente");
+            DataRow myRow2 = ds5.Tables["Paciente"].Rows[0];
       
 
 
 
 
-            if (myRow["PACI_FOTO"] != DBNull.Value)
+            if (myRow2["PACI_FOTO"] != DBNull.Value)
             {
-                byte[] result = (byte[])myRow["PACI_FOTO"];
-                int ArraySize = result.GetUpperBound(0);
-               
-                MemoryStream ms = new MemoryStream(result, 0, ArraySize);
-                Image imageBlob = Image.FromStream(ms,false);
-                pictureBox1.Image = imageBlob;
+                MyGlobals.archivo1 = (byte[])myRow2["PACI_FOTO"];
+
+
+
 
 
             }
             else
             {
-                pictureBox1.Image = null;
+
+                MyGlobals.archivo1 =null;
             }
 
-
-            if (myRow["PACI_FOTO_ORTO"] != DBNull.Value)
+            if (myRow2["PACI_FOTO2"] != DBNull.Value)
             {
-                byte[] result = (byte[])myRow["PACI_FOTO_ORTO"];
-                int ArraySize = result.GetUpperBound(0);
+                MyGlobals.archivo2 = (byte[])myRow2["PACI_FOTO2"];
 
-                MemoryStream ms = new MemoryStream(result, 0, ArraySize);
-                Image imageBlob = Image.FromStream(ms, false);
-                pictureBox2.Image = imageBlob;
 
 
             }
             else
             {
-                pictureBox2.Image = null;
+                MyGlobals.archivo2 = null;
             }
 
-            if (myRow["PACI_FOTO2"] != DBNull.Value)
-            {
-                byte[] result = (byte[])myRow["PACI_FOTO2"];
-                int ArraySize = result.GetUpperBound(0);
 
-                MemoryStream ms = new MemoryStream(result, 0, ArraySize);
-                Image imageBlob = Image.FromStream(ms, false);
-                pictureBox3.Image = imageBlob;
+
+            if (myRow2["PACI_FOTO_ORTO"] != DBNull.Value)
+            {
+                MyGlobals.archivo3 = (byte[])myRow2["PACI_FOTO_ORTO"];
+
 
 
             }
             else
             {
-                pictureBox3.Image = null;
+
+                MyGlobals.archivo3 = null;
             }
+            
+
+         
+           
 
 
-            if (myRow["PACI_FOTO_ORTO2"] != DBNull.Value)
+            if (myRow2["PACI_FOTO_ORTO2"] != DBNull.Value)
             {
-                byte[] result = (byte[])myRow["PACI_FOTO_ORTO2"];
-                int ArraySize = result.GetUpperBound(0);
+                MyGlobals.archivo4 = (byte[])myRow2["PACI_FOTO_ORTO2"];
 
-                MemoryStream ms = new MemoryStream(result, 0, ArraySize);
-                Image imageBlob = Image.FromStream(ms, false);
-                pictureBox4.Image = imageBlob;
 
 
             }
             else
             {
-                pictureBox4.Image = null;
+                MyGlobals.archivo4 = null;
             }
-            */
+         
 
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-             
-           
-            
-           
-
-            if (File.Exists(openFileDialog1.FileName))
-            {
-             
-            Stream Mystrem1 = openFileDialog1.OpenFile();
-            MemoryStream obj1 = new MemoryStream();
-            Mystrem1.CopyTo(obj1);
-           
-              MyGlobals.archivo1 = obj1.ToArray();  
-                
-                
-            
-
-            }
-
-            
+            string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
+            SQLiteConnection connect = new SQLiteConnection(cadena);
 
 
 
-          
 
-           
-
-            if (File.Exists(openFileDialog2.FileName))
-            {
-
-                Stream Mystrem2 = openFileDialog2.OpenFile();
-              
-                
-                    MemoryStream obj2 = new MemoryStream();
-                    Mystrem2.CopyTo(obj2);
-
-                    MyGlobals.archivo2 = obj2.ToArray();
-
-                }
-               
-            
-                
-            
-
-            
-
-            if (File.Exists(openFileDialog3.FileName))
-            {
-
-                Stream Mystrem3 = openFileDialog3.OpenFile();
-
-
-                MemoryStream obj3 = new MemoryStream();
-                Mystrem3.CopyTo(obj3);
-                MyGlobals.archivo3 = obj3.ToArray();
-            }
-                
-
-            
-           
-
-            
-
-            
-
-            if (File.Exists(openFileDialog4.FileName))
-            {
-                Stream Mystrem4 = openFileDialog4.OpenFile();
-
-                MemoryStream obj4 = new MemoryStream();
-                Mystrem4.CopyTo(obj4);
-
-                MyGlobals.archivo4 = obj4.ToArray();
-            }
+         
 
 
 
@@ -588,7 +637,6 @@ namespace Nativo.Modelo
                 PACI_TELEF= PACI_TELEF.Text,
                 PACI_ENT= dateTimePicker2.Text,
                 PACI_PROF= PACI_PROF.Text,
-                PACI_NORD= PACI_NORD.Text,
                 PACI_REPRE= PACI_REPRE.Text,
                 PACI_COMEN= PACI_COMEN.Text,
                 PACI_HIST= PACI_HIST.Text,
@@ -600,14 +648,91 @@ namespace Nativo.Modelo
                 
             };
 
+           
 
-
-            bool respuesta = PacienteLogica.Instancia.Guardar(objeto);
-            if (respuesta)
+            if (string.IsNullOrEmpty(PACI_COD.Text))
             {
-                limpiar();
+                bool respuesta = PacienteLogica.Instancia.Guardar(objeto);
+                
                 mostrar_pacientes();
+                string av;
+
+                av = objeto.PACI_COD;
+
+                SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT PACI_FOTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap1 = new SQLiteDataAdapter("SELECT PACI_FOTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap2 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap3 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+
+
+                DataSet ds1 = new DataSet();
+                adap.Fill(ds1);
+
+                DataSet ds2 = new DataSet();
+                adap1.Fill(ds2);
+
+                DataSet ds3 = new DataSet();
+                adap2.Fill(ds3);
+
+                DataSet ds4 = new DataSet();
+                adap3.Fill(ds4);
+
+
+
+                dataGridView2.RowTemplate.Height = 200;
+                dataGridView2.ColumnHeadersVisible = false;
+
+                dataGridView2.DataSource = ds1.Tables[0];
+
+                DataTable dt = (DataTable)dataGridView2.DataSource;
+
+                DataGridViewColumn column = dataGridView2.Columns[0];
+                dataGridView2.Columns[1].Visible = false;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView4.RowTemplate.Height = 200;
+                dataGridView4.ColumnHeadersVisible = false;
+                dataGridView4.DataSource = ds2.Tables[0];
+                DataTable dt2 = (DataTable)dataGridView4.DataSource;
+                DataGridViewColumn column2 = dataGridView4.Columns[0];
+                dataGridView4.Columns[1].Visible = false;
+                column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView4.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView1.RowTemplate.Height = 200;
+                dataGridView1.ColumnHeadersVisible = false;
+                dataGridView1.DataSource = ds3.Tables[0];
+                DataTable dt3 = (DataTable)dataGridView1.DataSource;
+
+                DataGridViewColumn column3 = dataGridView1.Columns[0];
+                dataGridView1.Columns[1].Visible = false;
+                column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView1.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView3.RowTemplate.Height = 200;
+                dataGridView3.ColumnHeadersVisible = false;
+
+                dataGridView3.DataSource = ds4.Tables[0];
+
+                DataTable d4 = (DataTable)dataGridView3.DataSource;
+
+                DataGridViewColumn column4 = dataGridView3.Columns[0];
+                dataGridView3.Columns[1].Visible = false;
+                column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView3.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                limpiar2();
+
             }
+            else
+            {
+                MessageBox.Show("Limpie el formulario para crear un nuevo registro");
+            }
+
+
+
+          
         }
 
         public void limpiar()
@@ -620,18 +745,80 @@ namespace Nativo.Modelo
             PACI_TELEF.Text = null;
             PACI_PROF.Text = null;
             dateTimePicker1.Text = null;
-            PACI_NORD.Text = null;
+            PACI_REPRE.Text = null;
+            PACI_COMEN.Text = null;
+            PACI_HIST.Text = null;
+            dateTimePicker2.Text = null;
+            edad.Text = null;
+            entrada.Text = null;
+            DNI.Text = null;
+            PACI_COD.Focus();
+            PACI_FOTO.Text = "Foto de Perfil";
+            PACI_FOTO2.Text = "Foto de Perfil 2";
+            PACI_FOTO_ORTO.Text = "Foto Ortodental 1";
+            PACI_FOTO_ORTO2.Text = "Foto Ortodental 2";
+            pictureBox1.Image = null;
+            pictureBox2.Image = null;
+            pictureBox3.Image = null;
+            pictureBox4.Image = null;
+            MyGlobals.archivo1 = null;
+            MyGlobals.archivo2 = null;
+            MyGlobals.archivo3 = null;
+            MyGlobals.archivo4 = null;
+
+        }
+
+
+        public void limpiar2()
+        {
+            PACI_COD.Text = null;
+            PACI_NOM.Text = null;
+            PACI_SEXO.Text = null;
+            PACI_DIR.Text = null;
+            PACI_LOCAL.Text = null;
+            PACI_TELEF.Text = null;
+            PACI_PROF.Text = null;
+            dateTimePicker1.Text = null;
             PACI_REPRE.Text = null;
             PACI_COMEN.Text = null;
             PACI_HIST.Text = null;
             dateTimePicker2.Text = null;
             DNI.Text = null;
+            MyGlobals.archivo1 = null;
+            MyGlobals.archivo2 = null;
+            MyGlobals.archivo3 = null;
+            MyGlobals.archivo4 = null;
+            pictureBox1.Image = null;
+            pictureBox2.Image = null;
+            pictureBox3.Image = null;
+            pictureBox4.Image = null;
+            PACI_FOTO.Text = "Foto de Perfil";
+            PACI_FOTO2.Text = "Foto de Perfil 2";
+            PACI_FOTO_ORTO.Text = "Foto Ortodental 1";
+            PACI_FOTO_ORTO2.Text = "Foto Ortodental 2";
+            edad.Text = null;
+            entrada.Text = null;
+
+
+            DataTable dt = (DataTable)dataGridView2.DataSource;
+            dt.Clear();
+
+            DataTable dt1 = (DataTable)dataGridView4.DataSource;
+            dt1.Clear();
+
+
+
+            DataTable dt2 = (DataTable)dataGridView1.DataSource;
+            dt2.Clear();
+
+
+            DataTable dt3 = (DataTable)dataGridView3.DataSource;
+            dt3.Clear();
             PACI_COD.Focus();
-            
-            RegistryKey registrykeyHKLM = Registry.LocalMachine;
-            string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run\MyApp";
-            registrykeyHKLM.DeleteValue(keyPath);
-            registrykeyHKLM.Close();
+
+
+
+
 
         }
 
@@ -640,28 +827,18 @@ namespace Nativo.Modelo
 
         }
 
-        private void PACI_FOTO_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;";
-            openFileDialog1.FilterIndex = 1;
-
-
-            openFileDialog1.ShowDialog();
-          
-        }
+       
 
         private void button4_Click(object sender, EventArgs e)
         {
-            limpiar();
+            limpiar2();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
 
-
-
-     
+            string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
+            SQLiteConnection connect = new SQLiteConnection(cadena);
 
             Paciente objeto = new Paciente()
             {
@@ -673,14 +850,15 @@ namespace Nativo.Modelo
                 PACI_LOCAL = PACI_LOCAL.Text,
                 PACI_TELEF = PACI_TELEF.Text,
                 PACI_ENT = dateTimePicker2.Text,
-
                 PACI_PROF = PACI_PROF.Text,
-             
-                PACI_NORD = PACI_NORD.Text,
                 PACI_REPRE = PACI_REPRE.Text,
                 PACI_COMEN = PACI_COMEN.Text,
                 PACI_HIST = PACI_HIST.Text,
                 DNI= DNI.Text,
+                PACI_FOTO = MyGlobals.archivo1,
+                PACI_FOTO2 = MyGlobals.archivo2,
+                PACI_FOTO_ORTO = MyGlobals.archivo3,
+                PACI_FOTO_ORTO2 = MyGlobals.archivo4,
 
             };
         
@@ -688,22 +866,90 @@ namespace Nativo.Modelo
 
 
 
-            bool respuesta = PacienteLogica.Instancia.Editar(objeto);
+         
          
 
-            if (respuesta )
+            if (!string.IsNullOrEmpty(PACI_COD.Text))
             {
+                bool respuesta = PacienteLogica.Instancia.Editar(objeto);
                 limpiar();
                 mostrar_pacientes();
+                string av;
 
-                RegistryKey registrykeyHKLM = Registry.LocalMachine;
-                string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Run\MyApp";
-                registrykeyHKLM.DeleteValue(keyPath);
-                registrykeyHKLM.Close();
+                av = objeto.PACI_COD;
 
+                SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT PACI_FOTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap1 = new SQLiteDataAdapter("SELECT PACI_FOTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap2 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO,PACI_COD FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+                SQLiteDataAdapter adap3 = new SQLiteDataAdapter("SELECT PACI_FOTO_ORTO2,PACI_COD  FROM Paciente WHERE PACI_COD ='" + av + "' ", connect);
+
+
+                DataSet ds1 = new DataSet();
+                adap.Fill(ds1);
+
+                DataSet ds2 = new DataSet();
+                adap1.Fill(ds2);
+
+                DataSet ds3 = new DataSet();
+                adap2.Fill(ds3);
+
+                DataSet ds4 = new DataSet();
+                adap3.Fill(ds4);
+
+
+
+                dataGridView2.RowTemplate.Height = 200;
+                dataGridView2.ColumnHeadersVisible = false;
+
+                dataGridView2.DataSource = ds1.Tables[0];
+
+                DataTable dt = (DataTable)dataGridView2.DataSource;
+
+                DataGridViewColumn column = dataGridView2.Columns[0];
+                dataGridView2.Columns[1].Visible = false;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView4.RowTemplate.Height = 200;
+                dataGridView4.ColumnHeadersVisible = false;
+                dataGridView4.DataSource = ds2.Tables[0];
+                DataTable dt2 = (DataTable)dataGridView4.DataSource;
+                DataGridViewColumn column2 = dataGridView4.Columns[0];
+                dataGridView4.Columns[1].Visible = false;
+                column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView4.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView1.RowTemplate.Height = 150;
+                dataGridView1.ColumnHeadersVisible = false;
+                dataGridView1.DataSource = ds3.Tables[0];
+                DataTable dt3 = (DataTable)dataGridView1.DataSource;
+
+                DataGridViewColumn column3 = dataGridView1.Columns[0];
+                dataGridView1.Columns[1].Visible = false;
+                column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView1.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                dataGridView3.RowTemplate.Height = 150;
+                dataGridView3.ColumnHeadersVisible = false;
+
+                dataGridView3.DataSource = ds4.Tables[0];
+
+                DataTable d4 = (DataTable)dataGridView3.DataSource;
+
+                DataGridViewColumn column4 = dataGridView3.Columns[0];
+                dataGridView3.Columns[1].Visible = false;
+                column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                ((DataGridViewImageColumn)dataGridView3.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
 
             }
+            else
+            {
+                MessageBox.Show("Eliga un paciente para editar");
+            }
         }
+
+
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -711,51 +957,21 @@ namespace Nativo.Modelo
             {
                 PACI_COD = PACI_COD.Text,
             };
-            bool respuesta = PacienteLogica.Instancia.Eliminar(objeto);
-            if (respuesta)
+           
+            if (!string.IsNullOrEmpty(PACI_COD.Text))
             {
-                limpiar();
+                bool respuesta = PacienteLogica.Instancia.Eliminar(objeto);
+                limpiar2();
                 mostrar_pacientes();
+            }
+            else
+            {
+                MessageBox.Show("Eliga un paciente para elimianrlo");
             }
         }
 
-        private void PACI_FOTO2_Click(object sender, EventArgs e)
-        {
-            openFileDialog2.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;";
-            openFileDialog2.FilterIndex = 1;
 
-            openFileDialog2.ShowDialog();
-            
-
-        }
-
-        private void PACI_FOTO_ORTO_Click(object sender, EventArgs e)
-        {
-            openFileDialog3.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;";
-            openFileDialog3.FilterIndex = 1;
-
-             openFileDialog3.ShowDialog();
-            
-        }
-
-        private void PACI_FOTO_ORTO2_Click(object sender, EventArgs e)
-        {
-            openFileDialog4.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;";
-            openFileDialog4.FilterIndex = 1;
-
-            openFileDialog4.ShowDialog();
-            
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-            mostrar_pacientes();
-         
-
-     
-            
-        }
+        
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
@@ -793,7 +1009,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -802,7 +1018,7 @@ namespace Nativo.Modelo
             {
                 _ver._Mensaje = PACI_COD.Text;
                 _ver._nombre = PACI_NOM.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
 
         }
@@ -821,7 +1037,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -829,7 +1045,7 @@ namespace Nativo.Modelo
             else
             {
                 _ver._Mensaje = PACI_COD.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
         }
 
@@ -842,7 +1058,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -850,7 +1066,7 @@ namespace Nativo.Modelo
             else
             {
                 _ver._Mensaje = PACI_COD.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
         }
 
@@ -863,7 +1079,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -871,7 +1087,7 @@ namespace Nativo.Modelo
             else
             {
                 _ver._Mensaje = PACI_COD.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
         }
 
@@ -884,7 +1100,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -892,7 +1108,7 @@ namespace Nativo.Modelo
             else
             {
                 _ver._Mensaje = PACI_COD.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
 
         }
@@ -906,7 +1122,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -915,7 +1131,7 @@ namespace Nativo.Modelo
             {
                 _ver._Mensaje = PACI_COD.Text;
                 _ver._nombre = PACI_NOM.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
         }
 
@@ -934,15 +1150,9 @@ namespace Nativo.Modelo
 
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Exit();
-        }
+     
 
-        private void button11_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
+       
 
         private void button12_Click(object sender, EventArgs e)
         {
@@ -953,7 +1163,7 @@ namespace Nativo.Modelo
             if (string.IsNullOrEmpty(PACI_COD.Text))
             {
 
-                MessageBox.Show("Eliga un paciente");
+                MessageBox.Show("Elija un paciente");
 
                 return;
 
@@ -962,8 +1172,82 @@ namespace Nativo.Modelo
             {
                 _ver._Mensaje = PACI_COD.Text;
                 _ver._nombre = PACI_NOM.Text;
-                _ver.Show();
+                _ver.ShowDialog();
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PACI_COMEN_TextChanged(object sender, EventArgs e)
+        {
+            PACI_COMEN.ScrollBars = ScrollBars.Both;
+            PACI_COMEN.WordWrap = true;
+        }
+
+        private void PACI_HIST_TextChanged(object sender, EventArgs e)
+        {
+            PACI_HIST.ScrollBars = ScrollBars.Both;
+            PACI_HIST.WordWrap = true;
+        }
+
+        private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Form3 _ver = new Form3();
+
+
+
+          
+            
+                _ver._Mensaje = dataGridView2.CurrentRow.Cells[1].Value.ToString();
+                _ver.ShowDialog();
+            
+
+        }
+
+        private void dataGridView4_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Form5 _ver = new Form5();
+
+
+
+                _ver._Mensaje = dataGridView4.CurrentRow.Cells[1].Value.ToString();
+                _ver.ShowDialog();
+            
+
+        }
+
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Form4 _ver = new Form4();
+
+
+
+           
+                _ver._Mensaje = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                _ver.ShowDialog();
+            
+
+        }
+
+        private void dataGridView3_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Form6 _ver = new Form6();
+
+
+
+        
+                _ver._Mensaje = dataGridView3.CurrentRow.Cells[1].Value.ToString();
+                _ver.ShowDialog();
+            
+
+        }
+
+        private void label27_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

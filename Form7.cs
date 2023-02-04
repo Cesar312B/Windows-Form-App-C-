@@ -6,11 +6,17 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Diagnostics;
+using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Security.Policy;
 
 namespace Nativo
 {
@@ -49,7 +55,7 @@ namespace Nativo
 
             SQLiteConnection connect = new SQLiteConnection(cadena);
             connect.Open();
-            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id, PACI_COD, ABO_FECHA, ABO_PTAS,PRECIO_TRABAJO-ABO_PTAS AS Debe, PRECIO_TRABAJO, DESC_TRABAJO FROM Abonos WHERE PACI_COD= '" + av + "'", connect);
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id, PACI_COD, ABO_FECHA, ABO_PTAS AS APORTES, PRECIO_TRABAJO, DESC_TRABAJO FROM Abonos WHERE PACI_COD= '" + av + "'", connect);
             DataSet ds = new DataSet();
 
 
@@ -57,7 +63,35 @@ namespace Nativo
             abonos.DataSource = ds.Tables[0];
 
             DataTable dt = (DataTable)abonos.DataSource;
+            abonos.Columns[1].Visible = false;
             dt.DefaultView.RowFilter = "ABO_FECHA like '%" + filtrar.Text + "%'";
+
+
+
+
+
+
+
+
+            int sum = 0;
+            for (int i = 0; i < abonos.Rows.Count; ++i)
+            {
+                sum += Convert.ToInt32(abonos.Rows[i].Cells[3].Value);
+            }
+
+            int sum2 = 0;
+            for (int i = 0; i < abonos.Rows.Count; ++i)
+            {
+                sum2 += Convert.ToInt32(abonos.Rows[i].Cells[4].Value);
+            }
+
+
+            total_abonado.Text = sum.ToString()+"$";
+            precio.Text = sum2.ToString()+"$";
+
+            int debe = sum2 - sum;
+
+            dv.Text = debe.ToString()+"$";
         }
 
 
@@ -70,12 +104,10 @@ namespace Nativo
 
             id.Text = abonos.CurrentRow.Cells[0].Value.ToString();
             PACI_COD.Text = abonos.CurrentRow.Cells[1].Value.ToString();
-           
             ABO_FECHA.Text = abonos.CurrentRow.Cells[2].Value.ToString();
             ABO_PTAS.Text = abonos.CurrentRow.Cells[3].Value.ToString();
-            debe.Text = abonos.CurrentRow.Cells[4].Value.ToString();
-            PRECIO_TRABAJO.Text = abonos.CurrentRow.Cells[5].Value.ToString();
-            DESC_TRABAJO.Text = abonos.CurrentRow.Cells[6].Value.ToString();
+            PRECIO_TRABAJO.Text = abonos.CurrentRow.Cells[4].Value.ToString();
+            DESC_TRABAJO.Text = abonos.CurrentRow.Cells[5].Value.ToString();
 
 
 
@@ -104,6 +136,7 @@ namespace Nativo
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             int av;
 
             int av2;
@@ -114,7 +147,7 @@ namespace Nativo
             }
             else
             {
-                 av = int.Parse(ABO_PTAS.Text);
+                av = int.Parse(ABO_PTAS.Text);
             }
 
             if (string.IsNullOrEmpty(PRECIO_TRABAJO.Text))
@@ -126,24 +159,30 @@ namespace Nativo
                 av2 = int.Parse(PRECIO_TRABAJO.Text);
             }
 
+
             Abonos objeto = new Abonos()
             {
                 PACI_COD = PACI_COD.Text,
                 ABO_FECHA = ABO_FECHA.Text,
                 ABO_PTAS = av,
-                PRECIO_TRABAJO= av2,
+                PRECIO_TRABAJO=av2,
                 DESC_TRABAJO= DESC_TRABAJO.Text
 
             };
 
 
-            bool respuesta = AbonoLogica.Instancia.Guardar(objeto);
-            if (respuesta)
+           
+            if (string.IsNullOrEmpty(id.Text))
             {
+                bool respuesta = AbonoLogica.Instancia.Guardar(objeto);
                 limpiar();
                 mostrar_bitacora();
 
 
+            }
+            else
+            {
+                MessageBox.Show("Limpie el formulario para crear un nuevo registro");
             }
         }
 
@@ -157,18 +196,12 @@ namespace Nativo
             ABO_PTAS.Text = null;
             PRECIO_TRABAJO.Text = null;
             DESC_TRABAJO.Text = null;
-            textBox1.Text = null;
-            debe.Text = null;
+     
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-
-
             int av;
-            int total = 0;
-            int aporte ;
             int av2;
 
             if (string.IsNullOrEmpty(id.Text))
@@ -181,31 +214,14 @@ namespace Nativo
                 MyGlobals.i = int.Parse(id.Text);
             }
 
-
-            if (string.IsNullOrEmpty(ABO_PTAS.Text)  )
+            if (string.IsNullOrEmpty(ABO_PTAS.Text))
             {
                 av = 0;
-               
-  
             }
             else
             {
-                
-
-                if (string.IsNullOrEmpty(textBox1.Text)) 
-                {
-                    aporte = 0;
-                }
-                else
-                {
-                   aporte = int.Parse(textBox1.Text);
-                }
-
                 av = int.Parse(ABO_PTAS.Text);
-
-                total = aporte + av;
             }
-
 
             if (string.IsNullOrEmpty(PRECIO_TRABAJO.Text))
             {
@@ -217,12 +233,12 @@ namespace Nativo
             }
 
 
-         
+
             Abonos objeto = new Abonos()
             {
                 id= MyGlobals.i, 
                 ABO_FECHA = ABO_FECHA.Text,
-                ABO_PTAS = total,
+                ABO_PTAS =av ,
                 PRECIO_TRABAJO = av2,
                 DESC_TRABAJO = DESC_TRABAJO.Text
 
@@ -252,6 +268,8 @@ namespace Nativo
 
                 MyGlobals.i = int.Parse(id.Text);
             }
+
+
             Abonos objeto = new Abonos()
             {
                 id = MyGlobals.i,
@@ -334,8 +352,6 @@ namespace Nativo
             e.Graphics.DrawString("Aporte:" +ABO_PTAS.Text +"$", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
             e.Graphics.DrawString("Precio del trabajo:" + PRECIO_TRABAJO.Text +"$", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
 
-            e.Graphics.DrawString("Debe:" + debe.Text+"$", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
-
 
             e.Graphics.DrawString("--Descripcion del Trabajo--", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20),stringFormat);
             e.Graphics.DrawString( DESC_TRABAJO.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
@@ -390,8 +406,8 @@ namespace Nativo
                         height += abonos.Rows[0].Height;
                         e.Graphics.DrawString(abonos.Rows[l].Cells[2].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 11), Brushes.Black, new RectangleF(80, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
                         e.Graphics.DrawString(abonos.Rows[l].Cells[3].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 12), Brushes.Black, new RectangleF(250, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
-                        e.Graphics.DrawString(abonos.Rows[l].Cells[5].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 12), Brushes.Black, new RectangleF(400, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
-                        e.Graphics.DrawString(abonos.Rows[l].Cells[6].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 11), Brushes.Black, new RectangleF(600, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
+                        e.Graphics.DrawString(abonos.Rows[l].Cells[4].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 12), Brushes.Black, new RectangleF(400, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
+                        e.Graphics.DrawString(abonos.Rows[l].Cells[5].FormattedValue.ToString(), abonos.Font = new Font("Book Antiqua", 11), Brushes.Black, new RectangleF(600, height, abonos.Columns[0].Width, abonos.Rows[0].Height));
                     }
                     else
                     {
@@ -419,13 +435,13 @@ namespace Nativo
             {
 
                 printPreviewDialog2.Document = printDocument2;
-                printPreviewDialog2.Show();
+                printPreviewDialog2.ShowDialog();
 
             }
             else
             {
                 printPreviewDialog1.Document = printDocument1;
-                printPreviewDialog1.Show();
+                printPreviewDialog1.ShowDialog();
             }
         }
 
@@ -437,6 +453,64 @@ namespace Nativo
         private void button6_Click(object sender, EventArgs e)
         {
             mostrar_bitacora();
+        }
+
+        private void DESC_TRABAJO_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            Process calc = new Process { StartInfo = { FileName = @"calc.exe" } };
+            calc.Start();
+
+            calc.WaitForExit();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button7_Click_1(object sender, EventArgs e)
+        {
+            string av = _Mensaje;
+            string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
+
+            SQLiteConnection connect = new SQLiteConnection(cadena);
+            connect.Open();
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id, PACI_COD, ABO_FECHA, ABO_PTAS AS APORTES, PRECIO_TRABAJO, DESC_TRABAJO FROM Abonos WHERE ABO_FECHA BETWEEN '"+filtrar.Text+"' AND '"+filtrar2.Text+"'  AND PACI_COD= '" + av + "'", connect);
+            DataSet ds = new DataSet();
+
+
+            adap.Fill(ds);
+            abonos.DataSource = ds.Tables[0];
+
+            DataTable dt = (DataTable)abonos.DataSource;
+            abonos.Columns[1].Visible = false;
+
+
+
+            int sum = 0;
+            for (int i = 0; i < abonos.Rows.Count; ++i)
+            {
+                sum += Convert.ToInt32(abonos.Rows[i].Cells[3].Value);
+            }
+
+            int sum2 = 0;
+            for (int i = 0; i < abonos.Rows.Count; ++i)
+            {
+                sum2 += Convert.ToInt32(abonos.Rows[i].Cells[4].Value);
+            }
+
+
+            total_abonado.Text = sum.ToString() + "$";
+            precio.Text = sum2.ToString() + "$";
+
+            int debe = sum2 - sum;
+
+            dv.Text = debe.ToString() + "$";
         }
     }
 }

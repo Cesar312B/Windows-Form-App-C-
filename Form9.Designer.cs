@@ -31,13 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form9));
             this.receta = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.TextBox();
-            this.MEDICAMENTO = new System.Windows.Forms.TextBox();
-            this.CNT = new System.Windows.Forms.TextBox();
             this.FECHA = new System.Windows.Forms.DateTimePicker();
             this.INSTRUCCIONES = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -51,7 +47,10 @@
             this.button5 = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
-            this.button6 = new System.Windows.Forms.Button();
+            this.printDocument2 = new System.Drawing.Printing.PrintDocument();
+            this.printPreviewDialog2 = new System.Windows.Forms.PrintPreviewDialog();
+            this.filtrar = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.receta)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,9 +58,9 @@
             // 
             this.receta.AllowUserToAddRows = false;
             this.receta.AllowUserToDeleteRows = false;
-            this.receta.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.receta.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.receta.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.receta.Location = new System.Drawing.Point(28, 263);
+            this.receta.Location = new System.Drawing.Point(28, 345);
             this.receta.Name = "receta";
             this.receta.ReadOnly = true;
             this.receta.RowHeadersWidth = 62;
@@ -69,6 +68,7 @@
             this.receta.Size = new System.Drawing.Size(919, 201);
             this.receta.TabIndex = 0;
             this.receta.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.receta_CellClick);
+            this.receta.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.receta_CellContentClick);
             // 
             // ID
             // 
@@ -78,36 +78,24 @@
             this.ID.Size = new System.Drawing.Size(100, 26);
             this.ID.TabIndex = 1;
             // 
-            // MEDICAMENTO
-            // 
-            this.MEDICAMENTO.Location = new System.Drawing.Point(134, 129);
-            this.MEDICAMENTO.Name = "MEDICAMENTO";
-            this.MEDICAMENTO.Size = new System.Drawing.Size(232, 26);
-            this.MEDICAMENTO.TabIndex = 3;
-            // 
-            // CNT
-            // 
-            this.CNT.Location = new System.Drawing.Point(372, 129);
-            this.CNT.Name = "CNT";
-            this.CNT.Size = new System.Drawing.Size(100, 26);
-            this.CNT.TabIndex = 4;
-            // 
             // FECHA
             // 
-            this.FECHA.CustomFormat = "dd/MM/yyyy";
+            this.FECHA.CustomFormat = "yyyy-MM-dd";
             this.FECHA.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.FECHA.Location = new System.Drawing.Point(28, 191);
             this.FECHA.Name = "FECHA";
             this.FECHA.Size = new System.Drawing.Size(142, 26);
             this.FECHA.TabIndex = 5;
-            this.FECHA.Value = new System.DateTime(2022, 12, 31, 0, 0, 0, 0);
+            this.FECHA.Value = new System.DateTime(2023, 2, 2, 18, 57, 0, 0);
             // 
             // INSTRUCCIONES
             // 
             this.INSTRUCCIONES.Location = new System.Drawing.Point(176, 191);
+            this.INSTRUCCIONES.Multiline = true;
             this.INSTRUCCIONES.Name = "INSTRUCCIONES";
-            this.INSTRUCCIONES.Size = new System.Drawing.Size(296, 26);
+            this.INSTRUCCIONES.Size = new System.Drawing.Size(450, 82);
             this.INSTRUCCIONES.TabIndex = 6;
+            this.INSTRUCCIONES.TextChanged += new System.EventHandler(this.INSTRUCCIONES_TextChanged);
             // 
             // label1
             // 
@@ -117,24 +105,6 @@
             this.label1.Size = new System.Drawing.Size(21, 20);
             this.label1.TabIndex = 7;
             this.label1.Text = "id";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(134, 106);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(128, 20);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "MEDICAMENTO";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(368, 104);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 20);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "CATIDAD";
             // 
             // label5
             // 
@@ -148,11 +118,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(176, 163);
+            this.label6.Location = new System.Drawing.Point(172, 161);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(134, 20);
+            this.label6.Size = new System.Drawing.Size(141, 20);
             this.label6.TabIndex = 12;
-            this.label6.Text = "INSTRICCIONES";
+            this.label6.Text = "INSTRUCCIONES";
             // 
             // label7
             // 
@@ -190,7 +160,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(28, 223);
+            this.button1.Location = new System.Drawing.Point(28, 305);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 34);
             this.button1.TabIndex = 17;
@@ -200,7 +170,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(119, 224);
+            this.button2.Location = new System.Drawing.Point(119, 306);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 33);
             this.button2.TabIndex = 18;
@@ -210,9 +180,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(200, 224);
+            this.button3.Location = new System.Drawing.Point(200, 306);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 33);
+            this.button3.Size = new System.Drawing.Size(85, 33);
             this.button3.TabIndex = 19;
             this.button3.Text = "Eliminar";
             this.button3.UseVisualStyleBackColor = true;
@@ -220,16 +190,17 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(281, 224);
+            this.button4.Location = new System.Drawing.Point(291, 306);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 33);
             this.button4.TabIndex = 20;
             this.button4.Text = "Limpiar";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(362, 224);
+            this.button5.Location = new System.Drawing.Point(372, 305);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 33);
             this.button5.TabIndex = 21;
@@ -251,22 +222,44 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // button6
+            // printDocument2
             // 
-            this.button6.Location = new System.Drawing.Point(444, 224);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(122, 33);
-            this.button6.TabIndex = 22;
-            this.button6.Text = "All Registers";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.printDocument2.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument2_PrintPage);
+            // 
+            // printPreviewDialog2
+            // 
+            this.printPreviewDialog2.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog2.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog2.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog2.Enabled = true;
+            this.printPreviewDialog2.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog2.Icon")));
+            this.printPreviewDialog2.Name = "printPreviewDialog2";
+            this.printPreviewDialog2.Visible = false;
+            // 
+            // filtrar
+            // 
+            this.filtrar.Location = new System.Drawing.Point(752, 129);
+            this.filtrar.Name = "filtrar";
+            this.filtrar.Size = new System.Drawing.Size(172, 26);
+            this.filtrar.TabIndex = 22;
+            this.filtrar.TextChanged += new System.EventHandler(this.filtrar_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(752, 103);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(98, 20);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Filtrar Fecha";
             // 
             // Form9
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(978, 495);
-            this.Controls.Add(this.button6);
+            this.ClientSize = new System.Drawing.Size(989, 616);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.filtrar);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -278,16 +271,13 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.INSTRUCCIONES);
             this.Controls.Add(this.FECHA);
-            this.Controls.Add(this.CNT);
-            this.Controls.Add(this.MEDICAMENTO);
             this.Controls.Add(this.ID);
             this.Controls.Add(this.receta);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Form9";
             this.Text = "Receta";
             this.Load += new System.EventHandler(this.Form9_Load);
@@ -301,13 +291,9 @@
 
         private System.Windows.Forms.DataGridView receta;
         private System.Windows.Forms.TextBox ID;
-        private System.Windows.Forms.TextBox MEDICAMENTO;
-        private System.Windows.Forms.TextBox CNT;
         private System.Windows.Forms.DateTimePicker FECHA;
         private System.Windows.Forms.TextBox INSTRUCCIONES;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
@@ -321,6 +307,9 @@
         private System.Windows.Forms.Button button5;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
-        private System.Windows.Forms.Button button6;
+        private System.Drawing.Printing.PrintDocument printDocument2;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog2;
+        private System.Windows.Forms.TextBox filtrar;
+        private System.Windows.Forms.Label label2;
     }
 }

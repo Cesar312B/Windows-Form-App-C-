@@ -52,15 +52,15 @@ namespace Nativo
 
             SQLiteConnection connect = new SQLiteConnection(cadena);
             connect.Open();
-            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id,PACI_COD,BIT_FECHA,BIT_DES  FROM BITACORA WHERE PACI_COD= '" + av + "'", connect);
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id,PACI_COD,BIT_FECHA,BIT_DES AS Material  FROM BITACORA WHERE PACI_COD= '" + av + "'", connect);
 
             DataSet ds = new DataSet();
 
 
             adap.Fill(ds);
             bitacora.DataSource = ds.Tables[0];
-
             DataTable dt = (DataTable)bitacora.DataSource;
+            bitacora.Columns[1].Visible = false;
             dt.DefaultView.RowFilter = "BIT_FECHA like '%" + filtrar.Text + "%'";
         }
 
@@ -86,9 +86,7 @@ namespace Nativo
         private void btnguardar_Click(object sender, EventArgs e)
         {
 
-
             
-
             Bitacora objeto = new Bitacora() { 
             PACI_COD =codigo2.Text ,
             BIT_FECHA = fecha.Text,
@@ -97,13 +95,18 @@ namespace Nativo
             };
 
 
-               bool respuesta = BitacoraLogica.Instancia.Guardar(objeto);
-            if (respuesta)
+              
+            if  (string.IsNullOrEmpty(id.Text))
             {
+                bool respuesta = BitacoraLogica.Instancia.Guardar(objeto);
                 limpiar();
                 mostrar_bitacora();
 
-             
+
+            }
+            else
+            {
+                MessageBox.Show("Limpie el formulario para crear un nuevo registro");
             }
 
         }
@@ -259,47 +262,18 @@ namespace Nativo
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-           /* string cadena = ConfigurationManager.ConnectionStrings["cadena"].ConnectionString;
-            string av = _Mensaje;
-            SQLiteConnection connect = new SQLiteConnection(cadena);
-            SQLiteCommand command = new SQLiteCommand("SELECT id,PACI_COD,BIT_FECHA,BIT_DES  FROM BITACORA WHERE PACI_COD= '" + av + "'", connect);
-            SQLiteDataAdapter dp = new SQLiteDataAdapter(command);
-            DataSet ds = new DataSet("Paciente");
-
-            dp.Fill(ds, "Paciente");*/
-
-           
-            
-
-
-
-
-
             Font tipotexto = new Font("Arial", 14, FontStyle.Italic);
             int ancho = 900;
             int y = 20;
-         
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
             stringFormat.LineAlignment = StringAlignment.Center;
-
-           
-
-            e.Graphics.DrawString("AR Dental Tulcán", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
+            e.Graphics.DrawString("AR Dental Tulcán", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20), stringFormat);
             e.Graphics.DrawString("Byron Almeida Odontologo", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
 
+            e.Graphics.DrawString("Codigo:" + codigo.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
 
-            e.Graphics.DrawString("Codigo:"+codigo.Text, tipotexto, Brushes.Black, new Rectangle(0,y+= 20,ancho,20));
-            e.Graphics.DrawString("Nombre:"+nombre.Text, tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20));
-            e.Graphics.DrawString("----Bitacora----", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
-
-            /*
-            foreach (DataRow myRow in ds.Tables["Paciente"].Rows)
-            {
-                e.Graphics.DrawString("Descripcion "+myRow["BIT_DES"].ToString() + "-----" +"Fecha"+ myRow["BIT_FECHA"].ToString(), tipotexto, Brushes.Black, new Rectangle(0, y += 30, ancho, 20));
-            }*/
-
-     
+            e.Graphics.DrawString("Nombre:" + nombre.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
 
             string g1 = "Descripcion";
             e.Graphics.DrawString(g1, new System.Drawing.Font("Book Antiqua", 16, FontStyle.Bold), Brushes.Black, 80, 140);
@@ -307,12 +281,10 @@ namespace Nativo
             string g2 = "Fecha";
             e.Graphics.DrawString(g2, new System.Drawing.Font("Book Antiqua", 16, FontStyle.Bold), Brushes.Black, 250, 140);
 
-           
-
             string l2 = "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
             e.Graphics.DrawString(l2, new System.Drawing.Font("Book Antiqua", 9, FontStyle.Bold), Brushes.Black, 0, 160);
 
-            int height = 255;
+            int height = 165;
             for (int l = numberOfItemsPrintedSoFar; l < bitacora.Rows.Count; l++)
             {
                 numberOfItemsPerPage = numberOfItemsPerPage + 1;
@@ -324,8 +296,9 @@ namespace Nativo
                     {
 
                         height += bitacora.Rows[0].Height;
-                        e.Graphics.DrawString(bitacora.Rows[l].Cells[3].FormattedValue.ToString(), bitacora.Font = new Font("Book Antiqua", 8), Brushes.Black, new Rectangle(80, height, bitacora.Columns[0].Width, bitacora.Rows[0].Height));
-                        e.Graphics.DrawString(bitacora.Rows[l].Cells[2].FormattedValue.ToString(), bitacora.Font = new Font("Book Antiqua", 12), Brushes.Black, new Rectangle(250, height, bitacora.Columns[0].Width, bitacora.Rows[0].Height));
+                        e.Graphics.DrawString(bitacora.Rows[l].Cells[3].FormattedValue.ToString(), bitacora.Font = new Font("Book Antiqua", 11), Brushes.Black, new RectangleF(80, height, bitacora.Columns[0].Width,bitacora.Rows[0].Height));
+                        e.Graphics.DrawString(bitacora.Rows[l].Cells[2].FormattedValue.ToString(), bitacora.Font = new Font("Book Antiqua", 12), Brushes.Black, new RectangleF(250, height, bitacora.Columns[0].Width, bitacora.Rows[0].Height));
+                
                     }
                     else
                     {
@@ -375,13 +348,13 @@ namespace Nativo
             {
 
                 printPreviewDialog2.Document = printDocument1;
-                printPreviewDialog2.Show();
+                printPreviewDialog2.ShowDialog();
 
             }
             else
             {
                 printPreviewDialog1.Document = printDocument2;
-                printPreviewDialog1.Show();
+                printPreviewDialog1.ShowDialog();
             }
         }
 
@@ -395,7 +368,15 @@ namespace Nativo
             mostrar_bitacora();
         }
 
-      
+        private void descripcion_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bitacora_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 
 }

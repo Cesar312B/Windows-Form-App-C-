@@ -72,22 +72,22 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(75, 165);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 20);
+            this.label2.Size = new System.Drawing.Size(65, 20);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Descripcion";
+            this.label2.Text = "Material";
             // 
             // descripcion
             // 
             this.descripcion.Location = new System.Drawing.Point(77, 188);
-            this.descripcion.Multiline = true;
             this.descripcion.Name = "descripcion";
             this.descripcion.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.descripcion.Size = new System.Drawing.Size(351, 48);
+            this.descripcion.Size = new System.Drawing.Size(351, 26);
             this.descripcion.TabIndex = 5;
+            this.descripcion.TextChanged += new System.EventHandler(this.descripcion_TextChanged);
             // 
             // btnguardar
             // 
-            this.btnguardar.Location = new System.Drawing.Point(77, 254);
+            this.btnguardar.Location = new System.Drawing.Point(77, 237);
             this.btnguardar.Name = "btnguardar";
             this.btnguardar.Size = new System.Drawing.Size(88, 37);
             this.btnguardar.TabIndex = 7;
@@ -97,7 +97,7 @@
             // 
             // btneditar
             // 
-            this.btneditar.Location = new System.Drawing.Point(171, 254);
+            this.btneditar.Location = new System.Drawing.Point(171, 237);
             this.btneditar.Name = "btneditar";
             this.btneditar.Size = new System.Drawing.Size(76, 37);
             this.btneditar.TabIndex = 8;
@@ -107,7 +107,7 @@
             // 
             // btneliminar
             // 
-            this.btneliminar.Location = new System.Drawing.Point(253, 254);
+            this.btneliminar.Location = new System.Drawing.Point(253, 237);
             this.btneliminar.Name = "btneliminar";
             this.btneliminar.Size = new System.Drawing.Size(92, 37);
             this.btneliminar.TabIndex = 9;
@@ -117,18 +117,22 @@
             // 
             // bitacora
             // 
+            this.bitacora.AllowUserToAddRows = false;
+            this.bitacora.AllowUserToDeleteRows = false;
             this.bitacora.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.bitacora.Location = new System.Drawing.Point(77, 306);
+            this.bitacora.Location = new System.Drawing.Point(77, 289);
             this.bitacora.Name = "bitacora";
+            this.bitacora.ReadOnly = true;
             this.bitacora.RowHeadersWidth = 62;
             this.bitacora.RowTemplate.Height = 28;
             this.bitacora.Size = new System.Drawing.Size(878, 170);
             this.bitacora.TabIndex = 10;
             this.bitacora.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.bitacora_CellClick);
+            this.bitacora.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.bitacora_CellContentClick);
             // 
             // button_limpiar
             // 
-            this.button_limpiar.Location = new System.Drawing.Point(351, 254);
+            this.button_limpiar.Location = new System.Drawing.Point(351, 237);
             this.button_limpiar.Name = "button_limpiar";
             this.button_limpiar.Size = new System.Drawing.Size(77, 37);
             this.button_limpiar.TabIndex = 12;
@@ -254,7 +258,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 20);
             this.label6.TabIndex = 32;
-            this.label6.Text = "Filtrar datos";
+            this.label6.Text = "Filtrar fecha";
             // 
             // filtrar
             // 
@@ -282,7 +286,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(989, 514);
+            this.ClientSize = new System.Drawing.Size(989, 494);
             this.Controls.Add(this.filtrar);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.button1);
@@ -304,8 +308,9 @@
             this.Controls.Add(this.descripcion);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.fecha_t);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Bitacora";
             this.Load += new System.EventHandler(this.Form1_Load);

@@ -42,11 +42,9 @@ namespace Nativo.Logica
             {
                 conexion.Open();
 
-                string query = "INSERT INTO RECETA (PACI_COD,MEDICAMENTO,CANTIDAD,FECHA,INSTRUCCIONES) VALUES(@PACI_COD,@MEDICAMENTO,@CANTIDAD,@FECHA,@INSTRUCCIONES)";
+                string query = "INSERT INTO RECETA (PACI_COD,FECHA,INSTRUCCIONES) VALUES(@PACI_COD,@FECHA,@INSTRUCCIONES)";
                 SQLiteCommand cmd = new SQLiteCommand(query, conexion);
                 cmd.Parameters.Add(new SQLiteParameter("@PACI_COD", obj.PACI_COD));
-                cmd.Parameters.Add(new SQLiteParameter("@MEDICAMENTO", obj.MEDICAMENTO));
-                cmd.Parameters.Add(new SQLiteParameter("@CANTIDAD", obj.CANTIDADA));
                 cmd.Parameters.Add(new SQLiteParameter("@FECHA", obj.FECHA));
                 cmd.Parameters.Add(new SQLiteParameter("@INSTRUCCIONES", obj.INSTRUCCIONES));
 
@@ -69,11 +67,9 @@ namespace Nativo.Logica
             {
                 conexion.Open();
 
-                string query = "UPDATE RECETA set MEDICAMENTO=@MEDICAMENTO,CANTIDAD=@CANTIDAD,FECHA=@FECHA,INSTRUCCIONES=@INSTRUCCIONES  WHERE id=@id";
+                string query = "UPDATE RECETA set FECHA=@FECHA,INSTRUCCIONES=@INSTRUCCIONES  WHERE id=@id";
                 SQLiteCommand cmd = new SQLiteCommand(query, conexion);
                 cmd.Parameters.Add(new SQLiteParameter("@id", obj.id));
-                cmd.Parameters.Add(new SQLiteParameter("@MEDICAMENTO", obj.MEDICAMENTO));
-                cmd.Parameters.Add(new SQLiteParameter("@CANTIDAD", obj.CANTIDADA));
                 cmd.Parameters.Add(new SQLiteParameter("@FECHA", obj.FECHA));
                 cmd.Parameters.Add(new SQLiteParameter("@INSTRUCCIONES", obj.INSTRUCCIONES));
 

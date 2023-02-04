@@ -10,13 +10,7 @@ namespace Nativo.Modelo
     {
         public int id { get; set; }
         public string PACI_COD { get; set; }
-
-        public string MEDICAMENTO { get; set; }
-
-        public string CANTIDADA { get; set; }
-
-
-        public DateTime FECHA { get; set; }
+        public string FECHA { get; set; }
 
         public string INSTRUCCIONES { get; set; }
     }

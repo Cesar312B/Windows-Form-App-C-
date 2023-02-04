@@ -29,8 +29,6 @@ namespace Nativo.Modelo
         public string PACI_PROF { get; set; }
 
         
-
-        public string PACI_NORD { get; set; }
         public string PACI_COMEN { get; set; }
         public string PACI_HIST { get; set; }
 

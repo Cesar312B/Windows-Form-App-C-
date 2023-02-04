@@ -11,6 +11,7 @@ using Nativo.Modelo;
 using Nativo.Logica;
 using System.Configuration;
 using System.Data.SQLite;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Nativo
 {
@@ -55,16 +56,22 @@ namespace Nativo
 
             SQLiteConnection connect = new SQLiteConnection(cadena);
             connect.Open();
-            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id,PACI_COD,MEDICAMENTO,CANTIDAD,FECHA,INSTRUCCIONES FROM RECETA WHERE PACI_COD= '" + av + "' AND FECHA =(SELECT MAX(FECHA) FROM RECETA)", connect);
+            /* SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id,PACI_COD,FECHA,INSTRUCCIONES FROM RECETA WHERE PACI_COD= '" + av + "' AND FECHA =(SELECT MAX(FECHA) FROM RECETA)", connect);*/
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT id,PACI_COD,FECHA,INSTRUCCIONES FROM RECETA WHERE PACI_COD= '" + av + "'ORDER BY FECHA DESC  ", connect);
 
             DataSet ds = new DataSet();
 
 
             adap.Fill(ds);
             receta.DataSource = ds.Tables[0];
-
             DataTable dt = (DataTable)receta.DataSource;
-          
+            dt.DefaultView.RowFilter = "FECHA like '%" + filtrar.Text + "%'";
+            DataGridViewColumn column = receta.Columns[3];
+            column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            
+
+
         }
 
         public void limpiar()
@@ -72,11 +79,9 @@ namespace Nativo
 
 
             ID.Text = null;
-            MEDICAMENTO.Text = null;
             FECHA.Text = null;
-            CNT.Text = null;
             INSTRUCCIONES.Text = null;
-            ID.Focus();
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -84,22 +89,26 @@ namespace Nativo
             Receta objeto = new Receta()
             {
                 PACI_COD = Codigo.Text,
-                MEDICAMENTO = MEDICAMENTO.Text,
-                CANTIDADA = CNT.Text,
-                FECHA= Convert.ToDateTime(FECHA.Value.Date.ToString("dd/MM/yyyy")),
+                FECHA= FECHA.Text,
                 INSTRUCCIONES = INSTRUCCIONES.Text
 
 
             };
 
 
-            bool respuesta = RecetaLogica.Instancia.Guardar(objeto);
-            if (respuesta)
+           
+            if (string.IsNullOrEmpty(ID.Text))
             {
+
+                bool respuesta = RecetaLogica.Instancia.Guardar(objeto);
                 limpiar();
                 mostrar_receta();
 
 
+            }
+            else
+            {
+                MessageBox.Show("Limpie el formulario para crear un nuevo registro");
             }
         }
 
@@ -120,9 +129,7 @@ namespace Nativo
            Receta objeto = new Receta()
             {
                id = MyGlobals.i,
-               MEDICAMENTO = MEDICAMENTO.Text,
-               CANTIDADA = CNT.Text,
-               FECHA = Convert.ToDateTime(FECHA.Value.Date.ToString("dd/MM/yyyy")),
+               FECHA = FECHA.Text,
                INSTRUCCIONES = INSTRUCCIONES.Text
 
 
@@ -150,27 +157,30 @@ namespace Nativo
                 MyGlobals.i = int.Parse(ID.Text);
             }
 
-            Bitacora objeto = new Bitacora()
+
+            Receta objeto = new Receta()
             {
                 id = MyGlobals.i,
+
+
             };
 
 
-            bool respuesta = BitacoraLogica.Instancia.Eliminar(objeto);
+            bool respuesta = RecetaLogica.Instancia.Eliminar(objeto);
             if (respuesta)
             {
                 limpiar();
                 mostrar_receta();
+
+
             }
         }
 
         private void receta_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             ID.Text = receta.CurrentRow.Cells[0].Value.ToString();
-            MEDICAMENTO.Text = receta.CurrentRow.Cells[2].Value.ToString();
-            CNT.Text = receta.CurrentRow.Cells[3].Value.ToString();
-            FECHA.Text = receta.CurrentRow.Cells[4].Value.ToString();
-            INSTRUCCIONES.Text = receta.CurrentRow.Cells[5].Value.ToString();
+            FECHA.Text = receta.CurrentRow.Cells[2].Value.ToString();
+            INSTRUCCIONES.Text = receta.CurrentRow.Cells[3].Value.ToString();
 
         }
 
@@ -243,10 +253,43 @@ namespace Nativo
             numberOfItemsPrintedSoFar = 0;
         }
 
+        private void printDocument2_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Font tipotexto = new Font("Arial", 14, FontStyle.Italic);
+            int ancho = 900;
+            int y = 20;
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
+            string s = INSTRUCCIONES.Text;
+            s = s.Replace(".", ".\n");
+
+            e.Graphics.DrawString("AR Dental Tulcán", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20), stringFormat);
+            e.Graphics.DrawString("Byron Almeida Odontologo", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
+
+            e.Graphics.DrawString("Codigo:" + Codigo.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
+
+            e.Graphics.DrawString("Nombre:" + Nombre.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
+            e.Graphics.DrawString("Fecha:" + FECHA.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
+            e.Graphics.DrawString("--Receta--", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20), stringFormat);
+            e.Graphics.DrawString(s, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 500));
+
+        }
+
         private void button5_Click(object sender, EventArgs e)
         {
-            printPreviewDialog1.Document = printDocument1;
-            printPreviewDialog1.Show();
+            if (string.IsNullOrEmpty(ID.Text))
+            {
+                MessageBox.Show("Elija un receta");
+
+                return;
+            }
+            else
+            {
+                printPreviewDialog2.Document = printDocument2;
+                printPreviewDialog2.ShowDialog(); 
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -268,6 +311,27 @@ namespace Nativo
                 _ver._Mensaje = Codigo.Text;
                 _ver.Show();
             }
+        }
+
+        private void INSTRUCCIONES_TextChanged(object sender, EventArgs e)
+        {
+            INSTRUCCIONES.ScrollBars = ScrollBars.Both;
+            INSTRUCCIONES.WordWrap = true;
+        }
+
+        private void receta_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void filtrar_TextChanged(object sender, EventArgs e)
+        {
+            mostrar_receta();
         }
     }
 }

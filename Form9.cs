@@ -12,6 +12,7 @@ using Nativo.Logica;
 using System.Configuration;
 using System.Data.SQLite;
 using static System.Windows.Forms.LinkLabel;
+using System.Drawing.Printing;
 
 namespace Nativo
 {
@@ -26,6 +27,8 @@ namespace Nativo
             public static int i;
 
         }
+
+    
 
         private int numberOfItemsPerPage = 0;
         private int numberOfItemsPrintedSoFar = 0;
@@ -43,6 +46,7 @@ namespace Nativo
      
             Nombre.Text = _nombre;
             mostrar_receta();
+
 
         }
 
@@ -65,9 +69,10 @@ namespace Nativo
             adap.Fill(ds);
             receta.DataSource = ds.Tables[0];
             DataTable dt = (DataTable)receta.DataSource;
-            dt.DefaultView.RowFilter = "FECHA like '%" + filtrar.Text + "%'";
             DataGridViewColumn column = receta.Columns[3];
             column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dt.DefaultView.RowFilter = "FECHA like '%" + filtrar.Text + "%'";
+            
 
             
 
@@ -255,6 +260,8 @@ namespace Nativo
 
         private void printDocument2_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
+       
+
             Font tipotexto = new Font("Arial", 14, FontStyle.Italic);
             int ancho = 900;
             int y = 20;
@@ -262,18 +269,72 @@ namespace Nativo
             stringFormat.Alignment = StringAlignment.Center;
             stringFormat.LineAlignment = StringAlignment.Center;
 
+        
+
             string s = INSTRUCCIONES.Text;
             s = s.Replace(".", ".\n");
-
+            Bitmap bm = new Bitmap(pictureBox1.Width,pictureBox1.Height);
+            pictureBox1.DrawToBitmap(bm, new Rectangle(0,0, pictureBox1.Width, pictureBox1.Height));
+          
+            e.Graphics.DrawImage(bm,
+                     (e.PageBounds.Width - bm.Width) / 2,
+                     bm.Width
+                  );
+            bm.Dispose();
             e.Graphics.DrawString("AR Dental Tulcán", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20), stringFormat);
             e.Graphics.DrawString("Byron Almeida Odontologo", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
 
-            e.Graphics.DrawString("Codigo:" + Codigo.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
-
-            e.Graphics.DrawString("Nombre:" + Nombre.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
-            e.Graphics.DrawString("Fecha:" + FECHA.Text, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20));
+            e.Graphics.DrawString("Codigo:" + Codigo.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
+            e.Graphics.DrawString("Nombre:" + Nombre.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
+            e.Graphics.DrawString("Fecha:" + FECHA.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
             e.Graphics.DrawString("--Receta--", tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 20), stringFormat);
-            e.Graphics.DrawString(s, tipotexto, Brushes.Black, new RectangleF(0, y += 20, ancho, 500));
+            e.Graphics.DrawString(s, tipotexto, Brushes.Black, new RectangleF(30, y += 20, 800, 500));
+            e.Graphics.DrawString("Calle Bolívar y Ayacucho Centro Comercial Muñoz OF:207", tipotexto, Brushes.Black, new Rectangle(0, y += 700, ancho, 20), stringFormat);
+            e.Graphics.DrawString("Tel:985097 Celular-WhatsApp:0994144713", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
+
+        }
+
+       
+
+        private  void PrintPage(object sender, PrintPageEventArgs e)
+        {
+            // Establecer margen de página
+    
+
+            // Dibujar un salto de línea
+            Font tipotexto = new Font("Arial", 14, FontStyle.Italic);
+            int ancho = 900;
+            int y = 20;
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
+
+
+            string s = INSTRUCCIONES.Text;
+            s = s.Replace(".", ".\n");
+            Bitmap bm = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.DrawToBitmap(bm, new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height));
+
+            e.Graphics.DrawImage(bm,
+                     (800 - bm.Width),
+                     30
+                  );
+            bm.Dispose();
+      
+            e.Graphics.DrawString("AR Dental Tulcán", tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20), stringFormat);
+            e.Graphics.DrawString("Byron Almeida Odontologo", tipotexto, Brushes.Black, new Rectangle(30, y += 20, ancho, 20), stringFormat);
+            string l2 = "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+            e.Graphics.DrawString(l2, new System.Drawing.Font("Book Antiqua", 9, FontStyle.Bold), Brushes.Black, new Rectangle(0, y += 20, ancho, 20));
+            e.Graphics.DrawString("Codigo:" + Codigo.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
+
+            e.Graphics.DrawString("Nombre:" + Nombre.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
+            e.Graphics.DrawString("Fecha:" + FECHA.Text, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20));
+
+            e.Graphics.DrawString("--Receta--", tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 20), stringFormat);
+            e.Graphics.DrawString(s, tipotexto, Brushes.Black, new RectangleF(30, y += 20, ancho, 600));
+            e.Graphics.DrawString("Calle Bolívar y Ayacucho Centro Comercial Muñoz OF:207", tipotexto, Brushes.Black, new Rectangle(0, y += 700, ancho, 20), stringFormat);
+            e.Graphics.DrawString("Tel:985097 Celular-WhatsApp:0994144713", tipotexto, Brushes.Black, new Rectangle(0, y += 20, ancho, 20), stringFormat);
 
         }
 
@@ -287,7 +348,9 @@ namespace Nativo
             }
             else
             {
-                printPreviewDialog2.Document = printDocument2;
+                PrintDocument printDocument = new PrintDocument();
+                printDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+                printPreviewDialog2.Document =printDocument;
                 printPreviewDialog2.ShowDialog(); 
             }
         }
@@ -316,7 +379,7 @@ namespace Nativo
         private void INSTRUCCIONES_TextChanged(object sender, EventArgs e)
         {
             INSTRUCCIONES.ScrollBars = ScrollBars.Both;
-            INSTRUCCIONES.WordWrap = true;
+            INSTRUCCIONES.WordWrap = false;
         }
 
         private void receta_CellContentClick(object sender, DataGridViewCellEventArgs e)

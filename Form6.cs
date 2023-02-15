@@ -53,6 +53,8 @@ namespace Nativo
 
             DataTable dt = (DataTable)PACI_FOTO_ORTO2.DataSource;
             ((DataGridViewImageColumn)PACI_FOTO_ORTO2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+            PACI_FOTO_ORTO2.Columns[0].Width =750;
+           /* PACI_FOTO_ORTO2.RowTemplate.Height = 1000;*/
 
 
         }
@@ -88,6 +90,27 @@ namespace Nativo
 
                 PACI_COD = av,
                 PACI_FOTO_ORTO2 = MyGlobals.archivo1,
+            };
+
+
+
+            bool respuesta = PacienteLogica.Instancia.Editar_foto4(objeto);
+            if (respuesta)
+            {
+
+                mostrar_foto();
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            string av = _Mensaje;
+
+            Paciente objeto = new Paciente()
+            {
+
+                PACI_COD = av,
+                PACI_FOTO_ORTO2 = null,
             };
 
 

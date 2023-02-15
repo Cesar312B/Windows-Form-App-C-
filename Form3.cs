@@ -56,6 +56,9 @@ namespace Nativo
             DataTable dt = (DataTable)PACI_FOTO.DataSource;
 
             ((DataGridViewImageColumn)PACI_FOTO.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+            PACI_FOTO.Columns[0].Width = 750;
+           
+            /*PACI_FOTO.RowTemplate.Height = 1200;*/
 
 
         }
@@ -103,6 +106,35 @@ namespace Nativo
                
                 mostrar_foto();
             }
+        }
+
+        private void PACI_FOTO_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            string av = _Mensaje;
+
+            Paciente objeto = new Paciente()
+            {
+
+                PACI_COD = av,
+                PACI_FOTO = null,
+
+
+            };
+
+
+
+            bool respuesta = PacienteLogica.Instancia.Editar_foto1(objeto);
+            if (respuesta)
+            {
+
+                mostrar_foto();
+            }
+
         }
     }
 }

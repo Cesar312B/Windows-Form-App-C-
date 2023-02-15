@@ -74,5 +74,10 @@ namespace Nativo
             }
            
         }
+
+        private void contraseña_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Nativo.Modelo
 {
-    public class Receta
+    public class Certificado
     {
         public int id { get; set; }
         public string PACI_COD { get; set; }
+
         public string FECHA { get; set; }
 
-        public string INSTRUCCIONES { get; set; }
-        public string Prescripciones { get; set; }
+        public string ENFERMEDAD { get; set; }
+        public string DESCRIPCION { get; set; }
+        public string RECOMENDACION { get; set; }
+
     }
 }

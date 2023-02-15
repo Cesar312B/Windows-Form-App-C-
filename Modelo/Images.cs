@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Nativo.Modelo
 {
-    public class Receta
+    public class Images
     {
+
         public int id { get; set; }
         public string PACI_COD { get; set; }
-        public string FECHA { get; set; }
 
-        public string INSTRUCCIONES { get; set; }
-        public string Prescripciones { get; set; }
+
+        public byte[] PACI_FOTO { get; set; }
+   
+        public string FECHA { get; set; }
     }
 }

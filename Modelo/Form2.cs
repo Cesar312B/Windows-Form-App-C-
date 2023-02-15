@@ -9,19 +9,9 @@ using Nativo.Modelo;
 using Nativo.Logica;
 using System.Configuration;
 using System.Data.SQLite;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Image = System.Drawing.Image;
-using static System.Net.Mime.MediaTypeNames;
 using System.IO;
-using Microsoft.Win32;
-using System.Drawing.Imaging;
-using System.Globalization;
-using static System.Data.Entity.Infrastructure.Design.Executor;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Cryptography;
+
 
 namespace Nativo.Modelo
 {
@@ -50,17 +40,61 @@ namespace Nativo.Modelo
             _openFileDialog.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
             _openFileDialog.FilterIndex = 1;
             _openFileDialog.RestoreDirectory = true;
-            _openFileDialog.Reset();
+    
             if (_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 //some code
-                PACI_FOTO.Text = _openFileDialog.FileName;
-                pictureBox1.Image = new Bitmap(_openFileDialog.FileName);
+                Image img = Image.FromFile(_openFileDialog.FileName);
+
+                // Comprueba si la imagen tiene información de orientación
+                if (img.PropertyIdList.Contains(0x0112)) // El valor 0x0112 corresponde al código de propiedad de orientación
+                {
+                    // Obtiene el valor de orientación de la imagen
+                    var prop = img.GetPropertyItem(0x0112);
+                    var orientation = (int)prop.Value[0];
+
+                    // Corrige la orientación de la imagen si es necesario
+                    switch (orientation)
+                    {
+                        case 2:
+                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                            break;
+                        case 3:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case 4:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipX);
+                            break;
+                        case 5:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                            break;
+                        case 6:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case 7:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                            break;
+                        case 8:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Establece la propiedad de orientación de la imagen a su valor predeterminado
+                    prop.Value = BitConverter.GetBytes((short)1);
+                    img.SetPropertyItem(prop);
+                }
+
+                // Guarda la imagen corregida en el archivo
+
+
+                pictureBox1.Image = new Bitmap(img);
                 Stream Mystrem1 = _openFileDialog.OpenFile();
                 MemoryStream obj1 = new MemoryStream();
                 Mystrem1.CopyTo(obj1);
-
                 MyGlobals.archivo1 = obj1.ToArray();
+
             }
 
 
@@ -71,12 +105,53 @@ namespace Nativo.Modelo
             _openFileDialog1.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
             _openFileDialog1.FilterIndex = 1;
             _openFileDialog1.RestoreDirectory = true;
-            _openFileDialog1.Reset();
             if (_openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 //some code
-                PACI_FOTO2.Text = _openFileDialog1.FileName;
-                pictureBox2.Image = new Bitmap(_openFileDialog1.FileName);
+                //some code
+                Image img = Image.FromFile(_openFileDialog1.FileName);
+
+                // Comprueba si la imagen tiene información de orientación
+                if (img.PropertyIdList.Contains(0x0112)) // El valor 0x0112 corresponde al código de propiedad de orientación
+                {
+                    // Obtiene el valor de orientación de la imagen
+                    var prop = img.GetPropertyItem(0x0112);
+                    var orientation = (int)prop.Value[0];
+
+                    // Corrige la orientación de la imagen si es necesario
+                    switch (orientation)
+                    {
+                        case 2:
+                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                            break;
+                        case 3:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case 4:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipX);
+                            break;
+                        case 5:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                            break;
+                        case 6:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case 7:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                            break;
+                        case 8:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Establece la propiedad de orientación de la imagen a su valor predeterminado
+                    prop.Value = BitConverter.GetBytes((short)1);
+                    img.SetPropertyItem(prop);
+                }
+
+                pictureBox2.Image = new Bitmap(img);
                 Stream Mystrem1 = _openFileDialog1.OpenFile();
                 MemoryStream obj1 = new MemoryStream();
                 Mystrem1.CopyTo(obj1);
@@ -93,12 +168,55 @@ namespace Nativo.Modelo
             _openFileDialog2.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
             _openFileDialog2.FilterIndex = 1;
             _openFileDialog2.RestoreDirectory = true;
-            _openFileDialog2.Reset();
+   
             if (_openFileDialog2.ShowDialog() == DialogResult.OK)
             {
                 //some code
-                PACI_FOTO_ORTO.Text = _openFileDialog2.FileName;
-                pictureBox3.Image = new Bitmap(_openFileDialog2.FileName);
+
+                //some code
+                Image img = Image.FromFile(_openFileDialog2.FileName);
+
+                // Comprueba si la imagen tiene información de orientación
+                if (img.PropertyIdList.Contains(0x0112)) // El valor 0x0112 corresponde al código de propiedad de orientación
+                {
+                    // Obtiene el valor de orientación de la imagen
+                    var prop = img.GetPropertyItem(0x0112);
+                    var orientation = (int)prop.Value[0];
+
+                    // Corrige la orientación de la imagen si es necesario
+                    switch (orientation)
+                    {
+                        case 2:
+                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                            break;
+                        case 3:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case 4:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipX);
+                            break;
+                        case 5:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                            break;
+                        case 6:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case 7:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                            break;
+                        case 8:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Establece la propiedad de orientación de la imagen a su valor predeterminado
+                    prop.Value = BitConverter.GetBytes((short)1);
+                    img.SetPropertyItem(prop);
+                }
+
+                pictureBox3.Image = new Bitmap(img);
                 Stream Mystrem1 = _openFileDialog2.OpenFile();
                 MemoryStream obj1 = new MemoryStream();
                 Mystrem1.CopyTo(obj1);
@@ -114,12 +232,55 @@ namespace Nativo.Modelo
             _openFileDialog3.Filter ="Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
             _openFileDialog3.FilterIndex = 1;
             _openFileDialog3.RestoreDirectory = true;
-            _openFileDialog3.Reset();
             if (_openFileDialog3.ShowDialog() == DialogResult.OK)
             {
                 //some code
-                PACI_FOTO_ORTO2.Text = _openFileDialog3.FileName;
-                pictureBox4.Image = new Bitmap(_openFileDialog3.FileName);
+
+
+                //some code
+                Image img = Image.FromFile(_openFileDialog3.FileName);
+
+                // Comprueba si la imagen tiene información de orientación
+                if (img.PropertyIdList.Contains(0x0112)) // El valor 0x0112 corresponde al código de propiedad de orientación
+                {
+                    // Obtiene el valor de orientación de la imagen
+                    var prop = img.GetPropertyItem(0x0112);
+                    var orientation = (int)prop.Value[0];
+
+                    // Corrige la orientación de la imagen si es necesario
+                    switch (orientation)
+                    {
+                        case 2:
+                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                            break;
+                        case 3:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            break;
+                        case 4:
+                            img.RotateFlip(RotateFlipType.Rotate180FlipX);
+                            break;
+                        case 5:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                            break;
+                        case 6:
+                            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            break;
+                        case 7:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                            break;
+                        case 8:
+                            img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Establece la propiedad de orientación de la imagen a su valor predeterminado
+                    prop.Value = BitConverter.GetBytes((short)1);
+                    img.SetPropertyItem(prop);
+                }
+
+                pictureBox4.Image = new Bitmap(img);
                 Stream Mystrem1 = _openFileDialog3.OpenFile();
                 MemoryStream obj1 = new MemoryStream();
                 Mystrem1.CopyTo(obj1);
@@ -161,7 +322,7 @@ namespace Nativo.Modelo
 
             SQLiteConnection connect = new SQLiteConnection(cadena);
             connect.Open();
-            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT PACI_COD,DNI,PACI_NOM FROM Paciente ORDER BY id DESC", connect);
+            SQLiteDataAdapter adap = new SQLiteDataAdapter("SELECT  PACI_COD,DNI,PACI_NOM FROM Paciente ORDER BY id DESC", connect);
 
             DataSet ds = new DataSet();
 
@@ -272,7 +433,7 @@ namespace Nativo.Modelo
 
 
 
-            dataGridView2.RowTemplate.Height = 200;
+            dataGridView2.RowTemplate.Height = 220;
             dataGridView2.ColumnHeadersVisible = false;
 
             dataGridView2.DataSource = ds1.Tables[0];
@@ -284,7 +445,7 @@ namespace Nativo.Modelo
             column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-            dataGridView4.RowTemplate.Height = 200;
+            dataGridView4.RowTemplate.Height = 220;
             dataGridView4.ColumnHeadersVisible = false;
             dataGridView4.DataSource = ds2.Tables[0];
             DataTable dt2 = (DataTable)dataGridView4.DataSource;
@@ -679,7 +840,7 @@ namespace Nativo.Modelo
 
 
 
-                dataGridView2.RowTemplate.Height = 200;
+                dataGridView2.RowTemplate.Height = 220;
                 dataGridView2.ColumnHeadersVisible = false;
 
                 dataGridView2.DataSource = ds1.Tables[0];
@@ -691,7 +852,7 @@ namespace Nativo.Modelo
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-                dataGridView4.RowTemplate.Height = 200;
+                dataGridView4.RowTemplate.Height = 220;
                 dataGridView4.ColumnHeadersVisible = false;
                 dataGridView4.DataSource = ds2.Tables[0];
                 DataTable dt2 = (DataTable)dataGridView4.DataSource;
@@ -700,7 +861,7 @@ namespace Nativo.Modelo
                 column2.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 ((DataGridViewImageColumn)dataGridView4.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-                dataGridView1.RowTemplate.Height = 200;
+                dataGridView1.RowTemplate.Height = 150;
                 dataGridView1.ColumnHeadersVisible = false;
                 dataGridView1.DataSource = ds3.Tables[0];
                 DataTable dt3 = (DataTable)dataGridView1.DataSource;
@@ -708,9 +869,9 @@ namespace Nativo.Modelo
                 DataGridViewColumn column3 = dataGridView1.Columns[0];
                 dataGridView1.Columns[1].Visible = false;
                 column3.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                ((DataGridViewImageColumn)dataGridView1.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
+                ((DataGridViewImageColumn)dataGridView1.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-                dataGridView3.RowTemplate.Height = 200;
+                dataGridView3.RowTemplate.Height = 150;
                 dataGridView3.ColumnHeadersVisible = false;
 
                 dataGridView3.DataSource = ds4.Tables[0];
@@ -798,6 +959,7 @@ namespace Nativo.Modelo
             PACI_FOTO_ORTO2.Text = "Foto Ortodental 2";
             edad.Text = null;
             entrada.Text = null;
+            buscar_nombre.Text = null;
 
 
             DataTable dt = (DataTable)dataGridView2.DataSource;
@@ -898,7 +1060,7 @@ namespace Nativo.Modelo
 
 
 
-                dataGridView2.RowTemplate.Height = 200;
+                dataGridView2.RowTemplate.Height = 220;
                 dataGridView2.ColumnHeadersVisible = false;
 
                 dataGridView2.DataSource = ds1.Tables[0];
@@ -910,7 +1072,7 @@ namespace Nativo.Modelo
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 ((DataGridViewImageColumn)dataGridView2.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-                dataGridView4.RowTemplate.Height = 200;
+                dataGridView4.RowTemplate.Height = 220;
                 dataGridView4.ColumnHeadersVisible = false;
                 dataGridView4.DataSource = ds2.Tables[0];
                 DataTable dt2 = (DataTable)dataGridView4.DataSource;
@@ -1248,6 +1410,60 @@ namespace Nativo.Modelo
         private void label27_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dataGridView2_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            Form11 _ver = new Form11();
+
+
+
+            if (string.IsNullOrEmpty(PACI_COD.Text))
+            {
+
+                MessageBox.Show("Elija un paciente");
+
+                return;
+
+            }
+            else
+            {
+                _ver._Mensaje = PACI_COD.Text;
+                _ver._nombre = PACI_NOM.Text;
+                _ver.ShowDialog();
+            }
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            Form13 _ver = new Form13();
+
+
+
+            if (string.IsNullOrEmpty(PACI_COD.Text))
+            {
+
+                MessageBox.Show("Elija un paciente");
+
+                return;
+
+            }
+            else
+            {
+                _ver._Mensaje = PACI_COD.Text;
+                _ver._nombre = PACI_NOM.Text;
+                _ver._cedula = DNI.Text;
+                _ver._edad = edad.Text;
+                _ver._direccion = PACI_DIR.Text;
+                _ver._telefono = PACI_TELEF.Text;
+                _ver._profesion = PACI_PROF.Text;
+                _ver.ShowDialog();
+            }
         }
     }
 }

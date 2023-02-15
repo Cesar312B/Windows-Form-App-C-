@@ -84,6 +84,24 @@
     <Compile Include="Form10.Designer.cs">
       <DependentUpon>Form10.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form11.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form11.Designer.cs">
+      <DependentUpon>Form11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form12.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form12.Designer.cs">
+      <DependentUpon>Form12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form13.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form13.Designer.cs">
+      <DependentUpon>Form13.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,17 +146,21 @@
     </Compile>
     <Compile Include="Logica\AbonoLogica.cs" />
     <Compile Include="Logica\BitacoraLogica.cs" />
+    <Compile Include="Logica\CertificadoLogica.cs" />
+    <Compile Include="Logica\ImagesLogica.cs" />
     <Compile Include="Logica\PacienteLogica.cs" />
     <Compile Include="Logica\PersonaLogica.cs" />
     <Compile Include="Logica\RecetaLogica.cs" />
     <Compile Include="Modelo\Abonos.cs" />
     <Compile Include="Modelo\Bitacora.cs" />
+    <Compile Include="Modelo\Certificado.cs" />
     <Compile Include="Modelo\Form2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modelo\Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modelo\Images.cs" />
     <Compile Include="Modelo\Paciente.cs" />
     <Compile Include="Modelo\Persona.cs" />
     <Compile Include="Modelo\Receta.cs" />
@@ -151,6 +173,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form10.resx">
       <DependentUpon>Form10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form11.resx">
+      <DependentUpon>Form11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form12.resx">
+      <DependentUpon>Form12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form13.resx">
+      <DependentUpon>Form13.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
